@@ -42,8 +42,11 @@ chmod +x ./Baseline_Tizen_Studio_6.1_ubuntu-64.bin
 
 Accept the installer license, keep the SDK path at `~/tizen-studio` so repository tasks can find it, choose a data directory, and launch Package Manager when the installer finishes. In Package Manager, install:
 
+- `Certificate Manager` from **Main SDK → Tizen SDK tools → Baseline SDK**.
 - `Web CLI` from the Main SDK tools.
 - `TV Extensions` and `Samsung Certificate Extension` from the Extension SDK.
+
+The Certificate Manager program and the Samsung Certificate Extension are separate packages; both are needed to create a Samsung TV certificate profile. Reinstalling only the Samsung Certificate Extension does not install the Certificate Manager program.
 
 Use the current Samsung Certificate Extension. Samsung notes that versions before 2.0.73 can no longer create certificates as of September 2025.
 
