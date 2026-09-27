@@ -1,6 +1,5 @@
 import { logoutFromSeerr } from '../api/seerr/logout';
-import { clearDeviceId } from './deviceId';
-import { clearCredentials } from './localstorageCredentials';
+import { markActiveProfileRequiresAuthentication } from '../profiles/profileStore';
 import { withBasePath } from './basePath';
 
 export function isAuthError(error: unknown): boolean {
@@ -21,8 +20,7 @@ export function setAuthRedirectHandler(handler: () => void) {
 
 export function clearAuthAndRedirect() {
     void logoutFromSeerr();
-    clearCredentials();
-    clearDeviceId();
+    markActiveProfileRequiresAuthentication();
 
     onAuthRedirect();
 }

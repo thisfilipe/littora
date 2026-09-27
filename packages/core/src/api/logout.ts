@@ -1,4 +1,4 @@
-import { clearCredentials } from '../utils/localstorageCredentials';
+import { leaveSession } from '../profiles/profileStore';
 import { getApi } from './getApi';
 import { getSessionApi } from '@jellyfin/sdk/lib/utils/api/session-api';
 import type { QueryClient } from '@tanstack/react-query';
@@ -10,8 +10,7 @@ export async function logout(queryClient: QueryClient) {
         await sessionApi.reportSessionEnded();
     } finally {
         await logoutFromSeerr();
-        clearCredentials();
-        queryClient.invalidateQueries({ queryKey: ['currentUser'] });
-        queryClient.invalidateQueries({ queryKey: ['seerrLoginStatus'] });
+        leaveSession();
+        queryClient.removeQueries();
     }
 }

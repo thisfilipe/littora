@@ -1,8 +1,8 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createApi } from '../api/jellyfinClient';
 import { getApi } from '../api/getApi';
 import { getAuthenticationApi } from '@jellyfin/sdk/lib/utils/api/authentication-api';
-import { saveCredentials } from '../utils/localstorageCredentials';
+import { saveAuthenticatedProfile } from '../profiles/profileStore';
 
 export function useQuickConnectInitiate() {
     return useMutation({
@@ -34,6 +34,8 @@ export function useQuickConnectStatus(
 }
 
 export function useQuickConnectAuthenticate() {
+    const queryClient = useQueryClient();
+
     return useMutation({
         mutationFn: async ({ server, secret }: { server: string; secret: string }) => {
             const api = createApi(server);
@@ -46,7 +48,14 @@ export function useQuickConnectAuthenticate() {
             const accessToken = res.data.AccessToken || '';
             const userId = res.data.User?.Id || '';
 
-            saveCredentials(server, userId, accessToken);
+            await queryClient.cancelQueries();
+            queryClient.removeQueries();
+            saveAuthenticatedProfile({
+                serverUrl: server,
+                jellyfinUserId: userId,
+                accessToken,
+                displayName: res.data.User?.Name || userId,
+            });
 
             return { api, user: res.data.User };
         },

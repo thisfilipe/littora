@@ -1,12 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { type PropsWithChildren, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { useCurrentUser } from '@pelagica/core';
+import { getAccessToken, logout, useCurrentUser } from '@pelagica/core';
 import { PageBackgroundProvider } from '@/context/PageBackgroundProvider';
 import { usePageBackground } from '@/hooks/usePageBackground';
 import MusicPlayerBar from '@/components/MusicPlayerBar';
 import FullPageLoader from '@/components/FullPageLoader';
-import { logout } from '@pelagica/core';
 import FullPageError from '@/components/FullPageError';
 import TopBar from '@/components/TopBar';
 import { cn } from '../lib/utils';
@@ -26,7 +25,7 @@ interface PageProps {
     pagePadding?: boolean;
 }
 
-const isLoggedIn = () => Boolean(localStorage.getItem('jf_token'));
+const isLoggedIn = () => Boolean(getAccessToken());
 
 const PageContent = ({
     children,

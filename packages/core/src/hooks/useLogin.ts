@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createApi } from '../api/jellyfinClient';
 import { getAuthenticationApi } from '@jellyfin/sdk/lib/utils/api/authentication-api';
-import { saveCredentials } from '../utils/localstorageCredentials';
+import { saveAuthenticatedProfile } from '../profiles/profileStore';
 import { loginToSeerr } from '../api/seerr/login';
 
 export function useLogin() {
@@ -28,7 +28,14 @@ export function useLogin() {
             const accessToken = res.data.AccessToken || '';
             const userId = res.data.User?.Id || '';
 
-            saveCredentials(server, userId, accessToken);
+            await queryClient.cancelQueries();
+            queryClient.removeQueries();
+            saveAuthenticatedProfile({
+                serverUrl: server,
+                jellyfinUserId: userId,
+                accessToken,
+                displayName: res.data.User?.Name || userId,
+            });
             try {
                 await loginToSeerr(server, username, password);
             } catch (e) {

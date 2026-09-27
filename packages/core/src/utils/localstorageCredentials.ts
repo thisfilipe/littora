@@ -1,31 +1,38 @@
-const STORAGE_SERVER_KEY = 'jf_server';
-const STORAGE_USER_KEY = 'jf_user';
-const STORAGE_TOKEN_KEY = 'jf_token';
+import {
+    getActiveAccessToken,
+    getActiveUserId,
+    getSelectedServerUrl,
+    leaveSession,
+    saveAuthenticatedProfile,
+    saveSelectedServerUrl,
+} from '../profiles/profileStore';
 
 export function getServerUrl(): string | null {
-    return localStorage.getItem(STORAGE_SERVER_KEY);
+    return getSelectedServerUrl();
 }
 
 export function saveServerUrl(serverUrl: string): void {
-    localStorage.setItem(STORAGE_SERVER_KEY, serverUrl);
+    saveSelectedServerUrl(serverUrl);
 }
 
 export function getUserId(): string | null {
-    return localStorage.getItem(STORAGE_USER_KEY);
+    return getActiveUserId();
 }
 
 export function getAccessToken(): string | null {
-    return localStorage.getItem(STORAGE_TOKEN_KEY);
+    return getActiveAccessToken();
 }
 
 export function saveCredentials(serverUrl: string, userId: string, accessToken: string): void {
-    localStorage.setItem(STORAGE_SERVER_KEY, serverUrl);
-    localStorage.setItem(STORAGE_USER_KEY, userId);
-    localStorage.setItem(STORAGE_TOKEN_KEY, accessToken);
+    saveAuthenticatedProfile({
+        serverUrl,
+        jellyfinUserId: userId,
+        accessToken,
+        displayName: userId,
+    });
 }
 
+/** @deprecated Use leaveSession, removeSavedProfile, or disconnectSavedServer explicitly. */
 export function clearCredentials(): void {
-    localStorage.removeItem(STORAGE_SERVER_KEY);
-    localStorage.removeItem(STORAGE_USER_KEY);
-    localStorage.removeItem(STORAGE_TOKEN_KEY);
+    leaveSession();
 }
