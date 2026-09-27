@@ -48,8 +48,13 @@ Give Littora a clear product identity and development workflow while retaining r
 
 - [x] Retain the GPLv3 license text and disclose the Pelagica source in the README.
 - [x] Record that the repository still needs a full dependency, artwork, and third-party action license review.
-- [ ] Identify the licenses and provenance of bundled logos, screenshots, translations, and the local Tizen build action.
+- [x] Inventory the provenance and license status of bundled logos, screenshots, translations, and the local Tizen build action; record unresolved items in [ASSET-PROVENANCE.md](./ASSET-PROVENANCE.md).
+- [ ] Preserve the Sourcetoad MIT license notice with the local Tizen build action.
+- [ ] Review the Tizen Studio installer download for HTTPS and integrity verification before enabling the action for Littora releases.
+- [ ] Review the remaining external GitHub Actions and direct dependency licenses before release.
 - [ ] Replace or clearly distinguish Pelagica marks and artwork before publishing Littora builds.
+- [ ] Remove or replace unused GitHub screenshots containing third-party media artwork with no recorded redistribution permission before using them in public documentation.
+- [ ] Decide whether to retain Pelagica's studio-logo catalog; if retained, add TMDB's required approved logo and attribution notice.
 
 ### 4. Product and runtime identity
 
