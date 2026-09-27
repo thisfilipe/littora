@@ -1,6 +1,8 @@
-# Pelagica Desktop
+# Littora Desktop (inherited target)
 
-A native desktop shell for Pelagica built with [Wails v3](https://v3.wails.io), additional to the existing web app.
+This is the Pelagica desktop shell retained in the Littora fork as a secondary inherited target. Its app identifiers, icons, and package names remain Pelagica-specific; do not distribute a Littora build until they have been reviewed. See the [repository cleanup plan](../docs/REPO-CLEANUP.md).
+
+The app uses [Wails v3](https://v3.wails.io) and wraps the existing web client.
 
 ## Prerequisites
 

@@ -43,7 +43,7 @@ Give Littora a clear product identity and development workflow while retaining r
 - [x] Add `FORK_NOTES.md` with source, baseline, branch, and build status.
 - [x] Record this cleanup gate in `PLAN.md` before continuing Phase 1.
 - [x] Remove Pelagica issue-template links and wording.
-- [ ] Review the platform-specific READMEs and update them as their targets are adopted.
+- [x] Review platform-specific READMEs; label webOS and desktop as inherited targets and record their release identity limits.
 
 ### 3. License, attribution, and assets
 
@@ -69,7 +69,7 @@ Give Littora a clear product identity and development workflow while retaining r
 ### 5. CI and release workflows
 
 - [x] Keep lint and formatting checks for pull requests and both development/stable branches.
-- [x] Add PR/push build checks for the Tizen and web bundles without release secrets.
+- [x] Add PR/push build checks for the Tizen, webOS, and web bundles without release secrets.
 - [x] Keep the existing release workflows available for review and gate their jobs to the Pelagica upstream repository.
 - [ ] Rework or remove Pelagica-specific publishing destinations before the first release workflow is triggered.
 - [ ] Add runtime tests only when the project defines the behavior and fixtures to validate.
@@ -84,7 +84,7 @@ Review before reuse or publication: Pelagica logos and screenshots, app IDs and 
 
 - README and provenance notes accurately identify Littora and its upstream source.
 - Local development uses `develop`; the PR workflow expects `develop` to `main`.
-- The Tizen and web build workflows are present and contain no publishing credentials.
+- The Tizen, webOS, and web build workflow is present and contains no publishing credentials.
 - The copied Sourcetoad Tizen action retains its MIT license notice, and TMDB image use has the approved logo and required client attribution.
 - Unresolved publication identity and service decisions are recorded; inherited publishing workflows skip in the Littora repository.
 - Tizen and web builds pass locally, and work has resumed on `develop`.

@@ -1,4 +1,4 @@
-name: Build Tizen and Web
+name: Build Tizen, webOS, and Web
 
 on:
   pull_request:
@@ -33,6 +33,9 @@ jobs:
 
       - name: Build Tizen bundle
         run: pnpm --filter @pelagica/tizen build
+
+      - name: Build webOS bundle
+        run: pnpm --filter @pelagica/webos build
 
       - name: Build web client
         run: pnpm --filter pelagica build
