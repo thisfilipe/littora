@@ -14,6 +14,7 @@ concurrency:
 jobs:
     webos:
         name: Build and package webOS app
+        if: github.repository == 'PelagicaApp/pelagica'
         runs-on: ubuntu-latest
         env:
             TAG: ${{ github.event.release.tag_name }}

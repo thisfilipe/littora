@@ -51,7 +51,7 @@ function getBrowserName(): string {
     return 'Browser';
 }
 
-let clientName = 'Pelagica';
+let clientName = 'Littora';
 let clientVersion = '0.0.0';
 let platform: Platform = 'web';
 let jellyfinInstance: Jellyfin | null = null;

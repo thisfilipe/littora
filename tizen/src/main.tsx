@@ -13,7 +13,7 @@ import '@pelagica/tv-frontend/theme.css';
 init();
 initGamepadNavigation();
 tizenNavigationAdapter.init();
-setClientInfo({ name: 'Pelagica Tizen', version: pkg.version, platform: 'tizen' });
+setClientInfo({ name: 'Littora Tizen', version: pkg.version, platform: 'tizen' });
 initTvStatsCollector();
 
 createRoot(document.getElementById('root')!).render(

@@ -12,7 +12,7 @@ import '@pelagica/tv-frontend/theme.css';
 
 init();
 initGamepadNavigation();
-setClientInfo({ name: 'Pelagica webOS', version: pkg.version, platform: 'webos' });
+setClientInfo({ name: 'Littora webOS', version: pkg.version, platform: 'webos' });
 initTvStatsCollector();
 getNavigationAdapter().init();
 

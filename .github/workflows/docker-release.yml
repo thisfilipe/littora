@@ -16,6 +16,7 @@ concurrency:
 
 jobs:
   build:
+    if: github.repository == 'PelagicaApp/pelagica'
     strategy:
       fail-fast: false
       matrix:
@@ -90,6 +91,7 @@ jobs:
 
   merge:
     name: Create ${{ matrix.variant.name }} Multi-Arch Manifest
+    if: github.repository == 'PelagicaApp/pelagica'
     runs-on: ubuntu-latest
     needs: build
     strategy:

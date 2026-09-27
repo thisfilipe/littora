@@ -14,6 +14,7 @@ concurrency:
 jobs:
     tizen:
         name: Build and sign Tizen widget
+        if: github.repository == 'PelagicaApp/pelagica'
         runs-on: ubuntu-latest
         env:
             TAG: ${{ github.event.release.tag_name }}

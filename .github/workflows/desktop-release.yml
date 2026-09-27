@@ -14,6 +14,7 @@ concurrency:
 jobs:
     macos:
         name: Build macOS app and installer
+        if: github.repository == 'PelagicaApp/pelagica'
         runs-on: macos-latest
         env:
             TAG: ${{ github.event.release.tag_name }}
@@ -138,6 +139,7 @@ jobs:
 
     windows:
         name: Build Windows installer
+        if: github.repository == 'PelagicaApp/pelagica'
         runs-on: windows-latest
         env:
             TAG: ${{ github.event.release.tag_name }}
@@ -197,6 +199,7 @@ jobs:
 
     linux:
         name: Build Linux installers
+        if: github.repository == 'PelagicaApp/pelagica'
         runs-on: ubuntu-latest
         env:
             TAG: ${{ github.event.release.tag_name }}
@@ -260,7 +263,7 @@ jobs:
     notify-tap:
         name: Notify homebrew tap
         needs: [macos, windows, linux]
-        if: success()
+        if: github.repository == 'PelagicaApp/pelagica' && success()
         runs-on: ubuntu-latest
         steps:
             - name: Trigger cask bump

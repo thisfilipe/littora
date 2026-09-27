@@ -10,14 +10,14 @@ jobs:
 
     steps:
       - name: Check PR branch rules
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
         run: |
-          BASE="${{ github.event.pull_request.base.ref }}"
-          HEAD="${{ github.event.pull_request.head.ref }}"
+          echo "Head: $HEAD_REF"
+          echo "Base: $BASE_REF"
 
-          echo "Head: $HEAD"
-          echo "Base: $BASE"
-
-          if [[ "$BASE" == "main" && "$HEAD" != "develop" ]]; then
+          if [[ "$BASE_REF" == "main" && "$HEAD_REF" != "develop" ]]; then
             echo "::error::Only PRs from develop may target main."
             exit 1
           fi

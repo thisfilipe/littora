@@ -59,8 +59,8 @@ const Login = () => {
 
     const quickConnectStatus = useQuickConnectStatus(serverUrl, quickConnectSecret, isPolling);
 
-    // A server pre-configured by the deployment (e.g. bundled with the Pelagica
-    // backend) means the user never has to type a server address on the TV.
+    // A server pre-configured by the deployment means the user never has to
+    // type a server address on the TV.
     useEffect(() => {
         if (!predefinedServerAddress?.trim() || getServerUrl()) return;
         saveServerUrl(predefinedServerAddress);
@@ -180,8 +180,7 @@ const Login = () => {
     return (
         <div className="flex min-h-svh flex-col items-center justify-center gap-3 p-6">
             <div className="flex flex-col items-center gap-2">
-                <img src="logo.svg" alt="Pelagica logo" className="h-8 w-8" />
-                <h1 className="text-2xl font-semibold">Pelagica</h1>
+                <h1 className="text-2xl font-semibold">Littora</h1>
             </div>
 
             {step === 'server' && (

@@ -1,165 +1,39 @@
-<p align="center">
-  <img height="80px" width="80px" src="https://pelagica.app/logo/logo_pride.svg" alt="Pelagica logo">
-  <h1 align="center"><b>Pelagica</b></h1>
-</p>
+# Littora (working name)
 
-<p align="center">
-  <a href="https://github.com/PelagicaApp/pelagica/releases/latest"><img src="https://img.shields.io/github/v/release/PelagicaApp/pelagica" alt="Latest Release"></a>
-  <a href="https://github.com/PelagicaApp/pelagica/blob/main/LICENSE"><img src="https://img.shields.io/github/license/PelagicaApp/pelagica" alt="License"></a>
-  <a href="https://hub.docker.com/r/kartoffelchipss/pelagica"><img src="https://img.shields.io/docker/pulls/kartoffelchipss/pelagica" alt="Docker Pulls"></a>
-  <img src="https://img.shields.io/github/stars/PelagicaApp/pelagica?style=flat&color=gold" alt="Stars">
-  <a href="https://stats.pelagica.app/"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fstats.pelagica.app%2Fstats&label=active%20instances&query=%24.active_instances&color=brightgreen" alt="Active Instances"></a>
-  <a href="https://twoglot.com/@KartoffelChipss/pelagica"><img src="https://twoglot.com/api/projects/by-owner/KartoffelChipss/pelagica/badge.svg" alt="Translations"></a>
-</p>
+> A TV-first Jellyfin client fork based on Pelagica.
 
-<p align="center">Pelagica is a web, desktop, and TV client for <a href="https://jellyfin.org">Jellyfin</a> built using React. It aims to provide a fast, modern, and customizable user experience for browsing and watching your media library. It's available as a self-hosted web app, a native desktop app for macOS, Windows, and Linux, and a TV app for Samsung Tizen, LG webOS and Apple TV.</p>
+**Status: active development.** Littora is being shaped around a shared household TV, starting with Samsung Tizen. Its product direction prioritizes independent household profiles, quick account switching, and predictable remote-control navigation.
 
-![Home](./.github/assets/home.webp)
+**Modified fork:** this repository is derived from Pelagica; Littora-specific changes began on 2026-09-27.
 
-## Table of Contents
+Littora builds on Pelagica's Jellyfin client and shared infrastructure. This repository is developing a distinct TV experience; inherited web and desktop code remains available as secondary targets while the TV client is stabilized. Android is a future consideration, not a current target.
 
-- [Features](#features)
-- [Web Demo](#web-demo)
-- [Installation options](#installation-options)
-- [Discord](#discord)
-- [Localization](#localization)
-- [Development Setup](#development-setup)
-- [Contributing](#contributing)
-- [What does that name mean?](#what-does-that-name-mean)
-- [Acknowledgements](#acknowledgements)
-- [Disclaimer](#disclaimer)
-- [License](#license)
+There is no stable Littora release or public demo yet. Packaging identifiers, branding assets, and some external service endpoints are still inherited from Pelagica and are being reviewed before distribution.
 
-## Features
+## Development status
 
-- **Customizable Sections:** Tailor your homepage with sections like "Continue Watching", "Recently Added", or completely custom queries.
-- **Media Bars:** Add custom media bars to feature specific content.
-- **Search:** Quickly find media across your library from anywhere using `Cmd+K` / `Ctrl+K`.
-- **Video Player:** Integrated video player for movies and TV shows.
-- **Music Player:** A music player that allows you to listen to your music albums or playlists while browsing your library.
-- **Responsive Design:** Works seamlessly on both desktop and mobile devices.
-- **Desktop App:** Native apps for macOS, Windows, and Linux, built with [Wails](https://v3.wails.io).
-- **Theming:** Light and dark mode support as well as custom themes
-- **Localization:** Supports multiple languages through [community contributions](#localization).
+- [Development plan](./docs/PLAN.md)
+- [Repository cleanup and identity plan](./docs/REPO-CLEANUP.md)
+- [Fork provenance and build notes](./docs/FORK_NOTES.md)
+- [Current Phase 1 progress](./docs/PHASE-1.md)
 
-If you want to suggest new features or report bugs, please use the [GitHub Issues](https://github.com/KartoffelChipss/pelagica/issues) section.
+### Build the Tizen bundle
 
-### Integrated Services
-
-- **Seerr:** Discover new movies and TV shows to watch, and request them without leaving Pelagica.
-- **Streamystats:** Get your streamystats recommendations directly on your home page.
-- **kefintweaks Watchlist:** View and manage your kefintweaks watchlist within Pelagica.
-
-### Screenshots
-
-<table>
-  <tr>
-    <td>
-      <img src="./.github/assets/library.webp" />
-    </td>
-    <td>
-      <img src="./.github/assets/series.webp" />
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <img src="./.github/assets/episode.webp" />
-    </td>
-    <td>
-      <img src="./.github/assets/music.webp" />
-    </td>
-  </tr>
-</table>
-
-> Screenshots may include media artwork used for demonstration purposes only.
-
-## Web Demo
-
-You can find a live demo of Pelagica web at:
-
-https://demo.pelagica.app/
-
-The demo instance has the `jellyfin.streamyfin.app` server with a username preconfigured, so you just have to click "Login" to test it out. If your own Jellyfin server is publicly accessible, you can also use that by entering the server URL and your credentials.
-
-For production use, you should self-host Pelagica using Docker or another method.
-
-Thank you to [Streamyfin](https://streamyfin.app/) for providing a demo Jellyfin server for testing!
-
-## Installation options
-
-### Web Installation
-
-Pelagica web is distributed as a Docker image. See the [Installation](https://pelagica.app/docs/installation) and [Configuration](https://pelagica.app/docs/configuration) docs for setup instructions, and [Themes](https://pelagica.app/docs/themes) for applying custom themes.
-
-### Desktop App
-
-Pelagica is also available as a native desktop app for macOS, Windows, and Linux, built with [Wails v3](https://v3.wails.io). Download the latest build for your platform from the [Releases](https://github.com/PelagicaApp/pelagica/releases/latest) page.
-
-- **macOS:** Not notarized, so Gatekeeper will flag it — right-click the app and choose "Open" to bypass.
-- **Windows:** Not signed with an Authenticode certificate, so SmartScreen will flag it.
-- **Linux:** Available as a `.deb` package, a `.pkg.tar.zst` package (Arch Linux), or an `.AppImage`.
-
-See the [desktop README](./desktop/README.md) for build and packaging instructions if you'd rather build it yourself.
-
-#### Homebrew (macOS)
-
-On Apple Silicon, Pelagica can be installed and kept up to date through the [Homebrew tap](https://github.com/PelagicaApp/homebrew-pelagica):
+The workspace uses Node.js 24, pnpm, and [go-task](https://taskfile.dev/).
 
 ```sh
-brew tap PelagicaApp/pelagica
-brew trust PelagicaApp/pelagica
-brew install --cask pelagica
+pnpm install
+task tizen:build
 ```
 
-Later updates are just `brew upgrade --cask pelagica`.
+The build creates a Tizen-ready bundle in `tizen/www/`. Packaging, signing, simulator, and device instructions are in the [Tizen development notes](./tizen/README.md). The app ID and signing identity in those instructions are still inherited and must be reviewed before making a public release.
 
-### Samsung Tizen
+## Relationship to Pelagica
 
-Pelagica is available as a Tizen app for Samsung Smart TVs. See the [Tizen Documentation](https://pelagica.app/docs/tizen) for installation instructions.
+Littora is a downstream fork of [Pelagica](https://github.com/PelagicaApp/pelagica). The upstream Git history is preserved, and this repository records its starting commit and divergence in [FORK_NOTES.md](./docs/FORK_NOTES.md). Littora-specific work began on 2026-09-27.
 
-### LG webOS
-
-Pelagica is available as a webOS app for LG Smart TVs. See the [webOS Documentation](https://pelagica.app/docs/webos) for installation instructions.
-
-### Apple TV
-
-Pelagica is available as a tvOS app for Apple TV. You can find the repository for the tvOS app with installation instructions [here](https://github.com/PelagicaApp/pelagica-atv).
-
-## Discord
-
-For discussions about Pelagica, join the [JellyfinCommunity](https://discord.gg/VKqprjh3Wr) and head to the `#pelagica` channel.
-
-## Localization
-
-Pelagica supports multiple languages through community contributions. See the [Translations](https://pelagica.app/docs/translations) docs for how to contribute.
-
-[![Pelagica translation status](https://twoglot.com/api/projects/by-owner/KartoffelChipss/pelagica/languages.svg)](https://twoglot.com/@KartoffelChipss/pelagica)
-
-## Development Setup
-
-See the [Development Setup](https://pelagica.app/docs/development) docs for prerequisites and how to run the project locally.
-
-## Contributing
-
-See the [Contributing](https://pelagica.app/docs/contributing) docs for guidelines on reporting issues and submitting pull requests.
-
-## What does that name mean?
-
-You might be wondering about the name "Pelagica". Since I didn't want to call it the usual "\*fin" or "jelly\*" names, I looked for synonyms related to the sea. "Pelagic" refers to living in the deep ocean, which felt fitting for a Jellyfin frontend.
-
-## Acknowledgements
-
-Pelagica’s design was inspired by the [finetic](https://github.com/AyaanZaveri/finetic) Jellyfin frontend.  
-No code was used; this project is an independent implementation.
-
-## Disclaimer
-
-This project is a third-party frontend for Jellyfin and is not affiliated with the Jellyfin project.
-
-Jellyfin is a media server designed to organize and stream legally obtained media. This project does not provide, host, or encourage access to pirated content.
-
-The movie posters and images shown in the examples are not owned by me and are only used for demonstration purposes. All rights belong to their respective owners.
+Littora is not an official Pelagica release and is not affiliated with the Jellyfin project. Jellyfin is a media server; users are responsible for the media they access through their own server.
 
 ## License
 
-This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](./LICENSE) file for details.
+This project is distributed under the GNU General Public License v3.0. See [LICENSE](./LICENSE). The project remains a modified work based on Pelagica; original applicable notices and the GPLv3 terms are retained.

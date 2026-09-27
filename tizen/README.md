@@ -1,4 +1,6 @@
-# Pelagica for Tizen
+# Littora for Samsung Tizen
+
+This fork is in active development. The app ID and signing profile used below are still inherited from Pelagica; see [FORK_NOTES.md](../docs/FORK_NOTES.md). Do not publish the resulting package as a Littora release until a unique app identity and signing setup have been selected.
 
 ## Tasks
 

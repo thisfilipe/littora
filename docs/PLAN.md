@@ -1,4 +1,4 @@
-# PLAN.md
+# Littora development plan
 
 # Working name: Littora
 
@@ -117,20 +117,28 @@ Avoid unnecessary divergence from Pelagica upstream.
 
 Create a clean fork and establish a known-good baseline before product changes.
 
+The repository identity and workflow cleanup is a prerequisite gate tracked in
+[`REPO-CLEANUP.md`](./REPO-CLEANUP.md). It keeps reusable Pelagica infrastructure
+and history while replacing project-specific documentation and development
+rules.
+
 ## Tasks
 
 - Fork the current Pelagica repository.
 - Add the original repository as `upstream`.
+- Use `develop` for active work and PRs into `main`.
 - Confirm the current Tizen build works.
 - Confirm the current desktop/web build works.
 - Record the Pelagica commit used as the initial baseline.
-- Create a short `FORK_NOTES.md` containing:
+- Maintain [`FORK_NOTES.md`](./FORK_NOTES.md) containing:
   - upstream repository;
   - baseline commit;
   - primary target hardware;
   - build instructions;
   - deployment method for the Samsung TV.
-- Avoid cosmetic changes in this phase.
+- Review inherited app identities, artwork, external services, and publishing
+  workflows before distributing Littora builds.
+- Avoid bulk renames or deletions of reusable upstream code.
 
 ## Acceptance criteria
 
@@ -138,6 +146,8 @@ Create a clean fork and establish a known-good baseline before product changes.
 - Tizen package installs and launches on the reference Samsung TV.
 - Desktop/web still launches.
 - Repository can pull/rebase/merge future upstream changes without special hacks.
+- README and fork notes identify Littora's purpose, upstream source, and license.
+- Pull requests to `main` follow the `develop` branch policy.
 
 ---
 
