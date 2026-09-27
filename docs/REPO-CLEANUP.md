@@ -23,7 +23,7 @@ Give Littora a clear product identity and development workflow while retaining r
 - Upstream baseline: `d551aa48a8ce74be01a136c0cbb61dde66ed7f9f`
 - Fork origin: <https://github.com/thisfilipe/littora>
 - First fork-specific planning commit: `c01b7ce5920f6cc421592b5e707c6db9b886c334`
-- Phase 1 and repository cleanup changes are committed on local `develop`; local `main` points to the Pelagica baseline. The local `origin/main` tracking ref still points to the first Littora planning commit (`c01b7ce`).
+- Phase 1 and repository cleanup changes are committed on `develop`; local `main` and `origin/main` point to the Pelagica baseline. Local `develop` tracks `origin/develop`.
 
 ## Work plan and status
 
@@ -32,8 +32,9 @@ Give Littora a clear product identity and development workflow while retaining r
 - [x] Create local `develop` from the current `main` commit without discarding the Phase 1 worktree.
 - [x] Update the PR target check so only PRs from `develop` may target `main`.
 - [x] Run the existing lint/format workflow on `develop` pushes as well as `main`.
-- [ ] Publish `develop`; configure the GitHub default branch/protection after reviewing the resulting branch state.
-- [ ] Decide whether to move remote `main` back to the Pelagica baseline. A read-only query confirmed the published planning commit is still on `origin/main`; it is preserved on local `develop`, and no remote write was performed.
+- [x] Publish `develop` and set the local branch to track `origin/develop`.
+- [x] Restore remote `main` to the Pelagica baseline. The first Littora planning commit and all subsequent Littora work remain preserved on `develop`.
+- [ ] Review and configure the GitHub default branch and branch protection for the `develop` to `main` PR flow.
 
 ### 2. Project documentation and provenance
 
@@ -80,5 +81,5 @@ Review before reuse or publication: Pelagica logos and screenshots, app IDs and 
 - The Tizen and web build workflows are present and contain no publishing credentials.
 - Unresolved publication identity and service decisions are recorded; inherited publishing workflows skip in the Littora repository.
 - Tizen and web builds pass locally, and work has resumed on `develop`.
-- Before opening a PR, publish `develop`, decide whether remote `main` should be restored to the Pelagica baseline, and configure the GitHub default branch/protection.
+- Before opening a PR, review the GitHub default branch and branch protection settings. The local/remote branch refs now match the intended flow: `develop` contains the Littora work and `main` is at the selected Pelagica baseline.
 - Before distributing a build, resolve the inherited app IDs, signing identity, artwork, external service endpoints, and release destinations listed above.

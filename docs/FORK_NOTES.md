@@ -22,7 +22,7 @@ Littora is a TV-first Jellyfin client fork. Samsung Tizen and a shared household
 - `main` is the stable branch and receives changes through pull requests from `develop`.
 - `upstream` remains the Pelagica source remote; upstream changes should be reviewed and integrated deliberately into `develop`.
 
-The local `develop` branch was created from `c01b7ce` on 2026-09-27. Phase 1 and repository cleanup changes are committed on `develop`; local `main` points to the Pelagica baseline. The GitHub default branch and branch protection settings have not been changed. The local `origin/main` tracking ref still points to the first Littora planning commit (`c01b7ce`); the remote branch has not been changed.
+The local `develop` branch was created from `c01b7ce` on 2026-09-27 and now tracks `origin/develop` at `ff77a018827375aec5a496c0cbb61dde66ed7f9f`. Phase 1 and repository cleanup changes are committed there. Local and remote `main` both point to the Pelagica baseline `d551aa48a8ce74be01a136c0cbb61dde66ed7f9f`; the first Littora planning commit and subsequent Littora work remain in `develop` history. The GitHub default branch and branch protection settings have not been changed.
 
 ## Development setup
 

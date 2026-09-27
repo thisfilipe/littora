@@ -14,7 +14,7 @@ This file is the phase's working record. It tracks findings, decisions, progress
 
 - `origin` points to `thisfilipe/littora`; `upstream` points to `PelagicaApp/pelagica`. At the start of the phase, `main` matched `origin/main`.
 - The commit before the Littora planning commit is `d551aa48a8ce74be01a136c0cbb61dde66ed7f9f`, the selected Pelagica baseline.
-- The first Littora planning commit is `c01b7ce5920f6cc421592b5e707c6db9b886c334`. It was initially made on `main`; it and the subsequent Littora changes are now committed on local `develop` so future changes can reach `main` through pull requests. Local `main` points back to the Pelagica baseline. The remote `origin/main` still points to `c01b7ce` and has not been changed.
+- The first Littora planning commit is `c01b7ce5920f6cc421592b5e707c6db9b886c334`. It was initially made on `main`; it and the subsequent Littora changes are now committed on `develop` so future changes can reach `main` through pull requests. At the current checkpoint, local and remote `main` point to the Pelagica baseline, and `develop` tracks `origin/develop`.
 - Web and Tizen build instructions exist, but builds, installation/launch on the reference TV, and a web launch had not been validated when this audit began.
 - The fork notes have since been created. No local `upstream/*` tracking refs were present, so upstream synchronization has not been exercised.
 - The working tree was clean before Phase 1 changes began. No product-wide cosmetic redesign was identified as part of this phase.
@@ -93,7 +93,7 @@ The first milestone is **F1-M1 — shared profile storage and legacy migration, 
 - `corepack pnpm --filter @pelagica/tizen build`: passed. Vite reported the existing `$WEBAPIS/webapis/webapis.js` script warning and large-chunk warnings.
 - `corepack pnpm --filter pelagica build`: passed. Vite reported large-chunk warnings.
 - `git diff --check`: passed. No tests or device launch were run.
-- The initial sandbox network check could not resolve `github.com`. A later read-only remote query confirmed `origin/main` at `c01b7ce` and no `origin/develop`; no push or remote branch rewrite was performed.
+- The initial sandbox network check could not resolve `github.com`. A later read-only remote query confirmed `origin/main` at `c01b7ce` and no `origin/develop`; this was the remote state before the branch publication and baseline restoration recorded below.
 
 ### 2026-09-27 — F1-M2 profile selector
 
@@ -107,6 +107,13 @@ The first milestone is **F1-M1 — shared profile storage and legacy migration, 
 - `corepack pnpm --filter @pelagica/tv-frontend lint`: passed with existing Fast Refresh warnings; no lint errors.
 - `git diff --check`: passed. No tests or reference-device run were performed.
 
+### 2026-09-27 — publish branch flow and restore baseline
+
+- Published local `develop` to `origin/develop`; local `develop` now tracks the remote branch at `ff77a018827375aec5a496c0cbb61dde66ed7f9f`.
+- Restored `origin/main` from the first Littora planning commit to the selected Pelagica baseline `d551aa48a8ce74be01a136c0cbb61dde66ed7f9f` using `--force-with-lease`. The update was guarded by the expected prior remote SHA, and all Littora commits remain reachable from `develop`.
+- Fetched `origin` and verified the remote refs and local tracking state. GitHub default-branch and branch-protection settings remain unchanged.
+- Updated repository cleanup and provenance notes to record the completed branch operations.
+
 ## Immediate next step
 
-The local cleanup and branch correction are complete, and F1-M1/F1-M2 compile for Tizen and web. The next product step is F1-M3 validation on the reference TV: verify picker on restart, add/switch/sign-out/remove, reauthentication of an expired token, rejection of a different account during reauthentication, and no cross-profile cached data. Before opening a PR, publish `develop` and decide whether to move remote `main` back to the Pelagica baseline; `origin/main` still includes the already-published planning commit.
+The local cleanup and branch correction are complete, and F1-M1/F1-M2 compile for Tizen and web. The next product step is F1-M3 validation on the reference TV: verify picker on restart, add/switch/sign-out/remove, reauthentication of an expired token, rejection of a different account during reauthentication, and no cross-profile cached data. Before opening a PR, review the GitHub default branch and branch-protection settings. Remote `develop` contains the Littora work; local and remote `main` point to the Pelagica baseline.
