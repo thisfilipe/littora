@@ -63,7 +63,8 @@ Give Littora a clear product identity and development workflow while retaining r
 
 - [x] Establish the product direction and distinguish planned work from shipped Littora releases.
 - [x] Update the shared TV login heading, browser titles, web app manifest, Jellyfin client names, and Tizen/webOS display titles to Littora.
-- [x] Configure a separate temporary Tizen development app/package ID and local signing profile for side-by-side TV testing.
+- [x] Configure a separate temporary Tizen development app/package ID for side-by-side TV testing.
+- [ ] Create the local Samsung TV certificate profile `littora-dev-author` and register the reference TV DUID; certificate files stay outside Git.
 - [ ] Choose the production Tizen application ID and signing identity before distribution.
 - [ ] Review webOS and desktop bundle identifiers before those platforms are distributed as Littora.
 - [ ] Repoint or consciously retain the Pelagica statistics, themes, studios, and translation services after reviewing their behavior and privacy implications.

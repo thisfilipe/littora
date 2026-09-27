@@ -28,7 +28,7 @@ pnpm install
 task tizen:build
 ```
 
-The build creates a Tizen-ready bundle in `tizen/www/`. Packaging, signing, simulator, and device instructions are in the [Tizen development notes](./tizen/README.md). The app ID and signing identity in those instructions are still inherited and must be reviewed before making a public release.
+The build creates a Tizen-ready bundle in `tizen/www/`. Packaging, signing, simulator, and device instructions are in the [Tizen development notes](./tizen/README.md). Sideload builds use a temporary Tizen development identity separate from Pelagica; the production app ID and signing identity remain to be chosen before a public release.
 
 ## Relationship to Pelagica
 
