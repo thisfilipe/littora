@@ -101,6 +101,7 @@ The first milestone is **F1-M1 — shared profile storage and legacy migration, 
 - Added profile selection, add-profile entry points for saved servers, explicit sign-out and per-profile removal. Identity query state is cleared before activating or authenticating another profile.
 - Reauthentication uses the saved profile's server and checks the returned Jellyfin user ID before updating credentials. A different account is rejected without changing either profile.
 - 401/403 handling now returns the TV app to the profile picker after marking the active profile for reauthentication. A profile switch entry is available in the TV top bar; Settings sign-out returns to the picker.
+- Committed this milestone on `develop` as `af33b40` (`feat(tv): add household profile picker`).
 - `corepack pnpm --filter @pelagica/tizen build`: passed, with the existing webapis script warning and large-chunk warnings.
 - `corepack pnpm --filter pelagica build`: passed, with large-chunk warnings.
 - `corepack pnpm --filter @pelagica/tv-frontend lint`: passed with existing Fast Refresh warnings; no lint errors.
