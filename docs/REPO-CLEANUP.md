@@ -23,7 +23,7 @@ Give Littora a clear product identity and development workflow while retaining r
 - Upstream baseline: `d551aa48a8ce74be01a136c0cbb61dde66ed7f9f`
 - Fork origin: <https://github.com/thisfilipe/littora>
 - First fork-specific planning commit: `c01b7ce5920f6cc421592b5e707c6db9b886c334`
-- Phase 1 and repository cleanup changes are being committed on local `develop`; local `main` is being returned to the Pelagica baseline.
+- Phase 1 and repository cleanup changes are committed on local `develop`; local `main` points to the Pelagica baseline. The local `origin/main` tracking ref still points to the first Littora planning commit (`c01b7ce`).
 
 ## Work plan and status
 
@@ -32,7 +32,8 @@ Give Littora a clear product identity and development workflow while retaining r
 - [x] Create local `develop` from the current `main` commit without discarding the Phase 1 worktree.
 - [x] Update the PR target check so only PRs from `develop` may target `main`.
 - [x] Run the existing lint/format workflow on `develop` pushes as well as `main`.
-- [ ] Push `develop` and configure the GitHub default branch/protection after reviewing the resulting branch state.
+- [ ] Publish `develop`; configure the GitHub default branch/protection after reviewing the resulting branch state.
+- [ ] Decide whether to move remote `main` back to the Pelagica baseline. A read-only query confirmed the published planning commit is still on `origin/main`; it is preserved on local `develop`, and no remote write was performed.
 
 ### 2. Project documentation and provenance
 
@@ -78,4 +79,4 @@ Review before reuse or publication: Pelagica logos and screenshots, app IDs and 
 - Local development uses `develop`; the PR workflow expects `develop` to `main`.
 - The Tizen and web build workflows are present and contain no publishing credentials.
 - Unresolved publication identity and service decisions are recorded; inherited publishing workflows skip in the Littora repository.
-- Resume Phase 1 at its pending Tizen and web build validation; do not begin F1-M2 until F1-M1 passes its stated criteria.
+- Tizen and web builds pass locally; do not begin F1-M2 until the remote branch flow is settled and F1-M1's remaining behavior is reviewed.

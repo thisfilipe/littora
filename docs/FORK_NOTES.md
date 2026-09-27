@@ -22,7 +22,7 @@ Littora is a TV-first Jellyfin client fork. Samsung Tizen and a shared household
 - `main` is the stable branch and receives changes through pull requests from `develop`.
 - `upstream` remains the Pelagica source remote; upstream changes should be reviewed and integrated deliberately into `develop`.
 
-The local `develop` branch was created from `c01b7ce` on 2026-09-27. Phase 1 and repository cleanup changes have been carried onto `develop`. The GitHub default branch and branch protection settings have not been changed. The remote `origin/main` still points to the first Littora planning commit and needs to be aligned separately if the remote history is also to keep that commit exclusively on `develop`.
+The local `develop` branch was created from `c01b7ce` on 2026-09-27. Phase 1 and repository cleanup changes are committed on `develop`; local `main` points to the Pelagica baseline. The GitHub default branch and branch protection settings have not been changed. The local `origin/main` tracking ref still points to the first Littora planning commit (`c01b7ce`); the remote branch has not been changed.
 
 ## Development setup
 
@@ -37,7 +37,7 @@ The bundle is written to `tizen/www/`. See [tizen/README.md](../tizen/README.md)
 
 ## Validation status
 
-At the time of this note, the baseline Tizen and desktop/web builds have not been validated in this environment. The Phase 1 progress record documents the current local changes and the pending build step. No release or deployment has been performed for Littora.
+The Tizen and web builds passed on 2026-09-27; see the Phase 1 progress record for commands and warnings. The baseline was not built separately, and no release or deployment has been performed for Littora.
 
 ## License and attribution
 

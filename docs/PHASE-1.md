@@ -14,7 +14,7 @@ This file is the phase's working record. It tracks findings, decisions, progress
 
 - `origin` points to `thisfilipe/littora`; `upstream` points to `PelagicaApp/pelagica`. At the start of the phase, `main` matched `origin/main`.
 - The commit before the Littora planning commit is `d551aa48a8ce74be01a136c0cbb61dde66ed7f9f`, the selected Pelagica baseline.
-- The first Littora planning commit is `c01b7ce5920f6cc421592b5e707c6db9b886c334`. It was initially made on `main`; it and the subsequent Littora changes are being kept on `develop` so future changes can reach `main` through pull requests.
+- The first Littora planning commit is `c01b7ce5920f6cc421592b5e707c6db9b886c334`. It was initially made on `main`; it and the subsequent Littora changes are now committed on local `develop` so future changes can reach `main` through pull requests. Local `main` points back to the Pelagica baseline. The remote `origin/main` still points to `c01b7ce` and has not been changed.
 - Web and Tizen build instructions exist, but builds, installation/launch on the reference TV, and a web launch had not been validated when this audit began.
 - The fork notes have since been created. No local `upstream/*` tracking refs were present, so upstream synchronization has not been exercised.
 - The working tree was clean before Phase 1 changes began. No product-wide cosmetic redesign was identified as part of this phase.
@@ -65,7 +65,7 @@ The first milestone is **F1-M1 — shared profile storage and legacy migration, 
 - [x] Record the starting state and phase criteria.
 - [x] F1-M1: add types, storage, migration, and compatibility facade.
 - [x] F1-M1: integrate password login/Quick Connect, sign-out, reauthentication, and cache handling.
-- [ ] F1-M1: build Tizen and the web frontend; record results.
+- [x] F1-M1: build Tizen and the web frontend; record results.
 - [ ] F1-M2: implement the TV profile selector, first setup, add, switch, sign-out, and removal.
 - [ ] F1-M2: invalidate state/cache when switching identities; start at the selector after restart.
 - [ ] F1-M3: review behavior and validate the flow on the reference device.
@@ -83,8 +83,18 @@ The first milestone is **F1-M1 — shared profile storage and legacy migration, 
 - `git diff --check` passed for tracked files, and the new files were checked for trailing whitespace.
 - The Tizen build had not started because `pnpm` was unavailable (`pnpm: command not found`) and `node_modules` was absent. The web build was therefore not attempted. No tests were added or run, and no dependencies were installed.
 
+### 2026-09-27 — repository cleanup, branch correction, and builds
+
+- Moved the development plan, cleanup plan, and fork notes into `docs/`; translated this phase record into English as `docs/PHASE-1.md` and updated repository links.
+- Committed repository identity, documentation, and CI changes on `develop` as `bba89c1` (`chore: establish Littora repository identity`).
+- Committed the Phase 1 profile/session implementation on `develop` as `229dc6e` (`feat(profiles): add multi-profile credential store`).
+- Restored local `main` to `d551aa48a8ce74be01a136c0cbb61dde66ed7f9f`. The `c01b7ce` commit and both new commits remain in `develop` history.
+- Installed the frozen workspace dependencies using pnpm 12.6.0.
+- `corepack pnpm --filter @pelagica/tizen build`: passed. Vite reported the existing `$WEBAPIS/webapis/webapis.js` script warning and large-chunk warnings.
+- `corepack pnpm --filter pelagica build`: passed. Vite reported large-chunk warnings.
+- `git diff --check`: passed. No tests or device launch were run.
+- The initial sandbox network check could not resolve `github.com`. A later read-only remote query confirmed `origin/main` at `c01b7ce` and no `origin/develop`; no push or remote branch rewrite was performed.
+
 ## Immediate next step
 
-The repository identity and workflow cleanup in [`REPO-CLEANUP.md`](./REPO-CLEANUP.md) is a prerequisite and is now being completed on local `develop`. Keep the Phase 1 changes on that branch, restore local `main` to the Pelagica baseline, and commit the work on `develop`.
-
-Then make `pnpm` and the workspace dependencies available, build Tizen and the web frontend, fix any type/build errors, and record the results here. Start F1-M2 only after F1-M1's build criteria pass. Begin F1-M2 with the TV selector route, selector-on-restart behavior, and cache invalidation when switching profiles.
+The local cleanup and branch correction are complete, and F1-M1's Tizen and web build criteria pass. The remaining branch-flow step is to publish `develop` and decide whether to move remote `main` back to the Pelagica baseline; `origin/main` still includes the already-published planning commit. Once the remote policy is settled, proceed to F1-M2: build the TV selector route, start at the selector after restart, and invalidate cached identity state when switching profiles.
