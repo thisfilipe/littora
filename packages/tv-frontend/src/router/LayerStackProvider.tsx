@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useReducer, useRef } from 'react';
 import type { Dispatch, ReactNode } from 'react';
-import { getAccessToken, getServerUrl } from '@pelagica/core';
+import { leaveSession, resetAuthRedirectHandler, setAuthRedirectHandler } from '@pelagica/core';
 import { getNavigationAdapter, onBackKey } from '@pelagica/tv-platform';
 import { routes } from './routes';
 import { matchRoute, parsePath } from './match';
@@ -13,10 +13,6 @@ export function buildLayer(to: string): Layer {
     const { pathname, search } = parsePath(to);
     const matched = matchRoute(routes, pathname) ?? matchRoute(routes, '/')!;
     return { id: nextLayerId(), pathname, search, route: matched.route, params: matched.params };
-}
-
-function isAuthenticated() {
-    return Boolean(getServerUrl() && getAccessToken());
 }
 
 function reducer(state: StackState, action: StackAction): StackState {
@@ -47,9 +43,17 @@ export const BackKeyInterceptContext = createContext<(handler: (() => boolean) |
 );
 
 export function LayerStackProvider({ children }: { children: ReactNode }) {
-    const [state, dispatch] = useReducer(reducer, undefined, () => ({
-        layers: [buildLayer(isAuthenticated() ? '/' : '/login')],
-    }));
+    const [state, dispatch] = useReducer(reducer, undefined, () => {
+        // A saved profile is never left active across app launches. The picker
+        // is the root route so a household member must choose who is watching.
+        leaveSession();
+        return { layers: [buildLayer('/profiles')] };
+    });
+
+    useEffect(() => {
+        setAuthRedirectHandler(() => dispatch({ type: 'RESET', to: '/profiles' }));
+        return resetAuthRedirectHandler;
+    }, [dispatch]);
 
     console.debug('Layers:', state.layers.map((layer) => layer.pathname).join(' -> '));
 

@@ -66,8 +66,8 @@ The first milestone is **F1-M1 — shared profile storage and legacy migration, 
 - [x] F1-M1: add types, storage, migration, and compatibility facade.
 - [x] F1-M1: integrate password login/Quick Connect, sign-out, reauthentication, and cache handling.
 - [x] F1-M1: build Tizen and the web frontend; record results.
-- [ ] F1-M2: implement the TV profile selector, first setup, add, switch, sign-out, and removal.
-- [ ] F1-M2: invalidate state/cache when switching identities; start at the selector after restart.
+- [x] F1-M2: implement the TV profile selector, first setup, add, switch, sign-out, and removal.
+- [x] F1-M2: invalidate state/cache when switching identities; start at the selector after restart.
 - [ ] F1-M3: review behavior and validate the flow on the reference device.
 
 ## Execution log
@@ -95,6 +95,17 @@ The first milestone is **F1-M1 — shared profile storage and legacy migration, 
 - `git diff --check`: passed. No tests or device launch were run.
 - The initial sandbox network check could not resolve `github.com`. A later read-only remote query confirmed `origin/main` at `c01b7ce` and no `origin/develop`; no push or remote branch rewrite was performed.
 
+### 2026-09-27 — F1-M2 profile selector
+
+- Added the TV profile picker as the app's root route. App startup clears only the active-session marker, retaining saved profiles and the selected server.
+- Added profile selection, add-profile entry points for saved servers, explicit sign-out and per-profile removal. Identity query state is cleared before activating or authenticating another profile.
+- Reauthentication uses the saved profile's server and checks the returned Jellyfin user ID before updating credentials. A different account is rejected without changing either profile.
+- 401/403 handling now returns the TV app to the profile picker after marking the active profile for reauthentication. A profile switch entry is available in the TV top bar; Settings sign-out returns to the picker.
+- `corepack pnpm --filter @pelagica/tizen build`: passed, with the existing webapis script warning and large-chunk warnings.
+- `corepack pnpm --filter pelagica build`: passed, with large-chunk warnings.
+- `corepack pnpm --filter @pelagica/tv-frontend lint`: passed with existing Fast Refresh warnings; no lint errors.
+- `git diff --check`: passed. No tests or reference-device run were performed.
+
 ## Immediate next step
 
-The local cleanup and branch correction are complete, and F1-M1's Tizen and web build criteria pass. The remaining branch-flow step is to publish `develop` and decide whether to move remote `main` back to the Pelagica baseline; `origin/main` still includes the already-published planning commit. Once the remote policy is settled, proceed to F1-M2: build the TV selector route, start at the selector after restart, and invalidate cached identity state when switching profiles.
+The local cleanup and branch correction are complete, and F1-M1/F1-M2 compile for Tizen and web. The next product step is F1-M3 validation on the reference TV: verify picker on restart, add/switch/sign-out/remove, reauthentication of an expired token, rejection of a different account during reauthentication, and no cross-profile cached data. Before opening a PR, publish `develop` and decide whether to move remote `main` back to the Pelagica baseline; `origin/main` still includes the already-published planning commit.

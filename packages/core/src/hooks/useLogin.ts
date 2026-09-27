@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createApi } from '../api/jellyfinClient';
 import { getAuthenticationApi } from '@jellyfin/sdk/lib/utils/api/authentication-api';
 import { saveAuthenticatedProfile } from '../profiles/profileStore';
+import { ProfileIdentityMismatchError } from '../profiles/errors';
 import { loginToSeerr } from '../api/seerr/login';
 
 export function useLogin() {
@@ -12,10 +13,12 @@ export function useLogin() {
             server,
             username,
             password,
+            expectedUserId,
         }: {
             server: string;
             username: string;
             password: string;
+            expectedUserId?: string;
         }) => {
             const api = createApi(server);
             const res = await getAuthenticationApi(api).authenticateUserByName({
@@ -27,6 +30,9 @@ export function useLogin() {
 
             const accessToken = res.data.AccessToken || '';
             const userId = res.data.User?.Id || '';
+            if (expectedUserId && userId !== expectedUserId) {
+                throw new ProfileIdentityMismatchError();
+            }
 
             await queryClient.cancelQueries();
             queryClient.removeQueries();

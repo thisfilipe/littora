@@ -1,7 +1,7 @@
 import {
-    clearCredentials,
     getServerUrl,
     getUserProfileImageUrl,
+    logout,
     useCurrentUser,
     useServerInfo,
 } from '@pelagica/core';
@@ -90,8 +90,9 @@ const Settings = () => {
                     <div className="flex flex-wrap gap-2">
                         <FocusableButton
                             onClick={() => {
-                                clearCredentials();
-                                navigate('/login', { mode: 'reset' });
+                                void logout(queryClient)
+                                    .catch(() => undefined)
+                                    .finally(() => navigate('/profiles', { mode: 'reset' }));
                             }}
                         >
                             <LogOut />

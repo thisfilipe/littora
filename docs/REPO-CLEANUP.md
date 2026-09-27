@@ -73,10 +73,12 @@ Keep the shared Jellyfin API/client, authentication, playback, common UI infrast
 
 Review before reuse or publication: Pelagica logos and screenshots, app IDs and signing profiles, external Pelagica-hosted services, demo and release destinations, and copied third-party actions. Avoid mass renaming of internal package/module names until it provides a concrete maintenance or user-facing benefit.
 
-## Completion gate before resuming Phase 1
+## Local cleanup status and remaining external setup
 
 - README and provenance notes accurately identify Littora and its upstream source.
 - Local development uses `develop`; the PR workflow expects `develop` to `main`.
 - The Tizen and web build workflows are present and contain no publishing credentials.
 - Unresolved publication identity and service decisions are recorded; inherited publishing workflows skip in the Littora repository.
-- Tizen and web builds pass locally; do not begin F1-M2 until the remote branch flow is settled and F1-M1's remaining behavior is reviewed.
+- Tizen and web builds pass locally, and work has resumed on `develop`.
+- Before opening a PR, publish `develop`, decide whether remote `main` should be restored to the Pelagica baseline, and configure the GitHub default branch/protection.
+- Before distributing a build, resolve the inherited app IDs, signing identity, artwork, external service endpoints, and release destinations listed above.

@@ -10,12 +10,18 @@ export function isAuthError(error: unknown): boolean {
     return false;
 }
 
-let onAuthRedirect: () => void = () => {
+const defaultAuthRedirect = () => {
     window.location.href = withBasePath('/login');
 };
 
+let onAuthRedirect: () => void = defaultAuthRedirect;
+
 export function setAuthRedirectHandler(handler: () => void) {
     onAuthRedirect = handler;
+}
+
+export function resetAuthRedirectHandler() {
+    onAuthRedirect = defaultAuthRedirect;
 }
 
 export function clearAuthAndRedirect() {

@@ -107,6 +107,7 @@ export * from './hooks/useUserLibraryItem';
 export * from './hooks/useUserViews';
 export * from './profiles/profileStore';
 export * from './profiles/types';
+export * from './profiles/errors';
 export * from './types/items';
 export * from './types/locales';
 export * from './utils/authErrorHandler';

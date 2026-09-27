@@ -1,10 +1,12 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
-import { useNavigate } from '@/router';
+import { useNavigate, useSearchParams } from '@/router';
 import { useTranslation } from 'react-i18next';
 import {
     getJellyfinInstance,
+    getSavedProfiles,
     getServerUrl,
+    ProfileIdentityMismatchError,
     saveServerUrl,
     useDiscoverServers,
     useLogin,
@@ -31,8 +33,17 @@ const ErrorMessage = ({ message }: { message: string }) => (
 );
 
 const Login = () => {
-    const { t } = useTranslation(['login', 'common']);
+    const { t } = useTranslation(['login', 'common', 'profiles']);
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const reauthProfileId = searchParams.get('profileId');
+    const reauthProfile = useMemo(
+        () =>
+            reauthProfileId
+                ? (getSavedProfiles().find((profile) => profile.id === reauthProfileId) ?? null)
+                : null,
+        [reauthProfileId]
+    );
     const predefinedServerAddress = useServerAddress();
 
     const [serverUrl, setServerUrl] = useState<string>(() => getServerUrl() || '');
@@ -58,6 +69,12 @@ const Login = () => {
     const initiatingRef = useRef(false);
 
     const quickConnectStatus = useQuickConnectStatus(serverUrl, quickConnectSecret, isPolling);
+
+    useEffect(() => {
+        if (reauthProfileId && !reauthProfile) {
+            navigate('/profiles', { mode: 'reset' });
+        }
+    }, [reauthProfileId, reauthProfile, navigate]);
 
     // A server pre-configured by the deployment means the user never has to
     // type a server address on the TV.
@@ -145,11 +162,19 @@ const Login = () => {
         setIsPolling(false);
 
         quickConnectAuthenticate
-            .mutateAsync({ server: serverUrl, secret: quickConnectSecret })
+            .mutateAsync({
+                server: serverUrl,
+                secret: quickConnectSecret,
+                expectedUserId: reauthProfile?.jellyfinUserId,
+            })
             .then(() => navigate('/', { mode: 'reset' }))
-            .catch(() => {
-                setQuickConnectError(t('login:quick_connect_auth_failed'));
-                setQuickConnectApproved(false);
+            .catch((error: unknown) => {
+                setQuickConnectError(
+                    error instanceof ProfileIdentityMismatchError
+                        ? t('login:login_failed')
+                        : t('login:quick_connect_auth_failed')
+                );
+                setQuickConnectApproved(true);
             });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
@@ -159,6 +184,7 @@ const Login = () => {
         serverUrl,
         quickConnectAuthenticate,
         navigate,
+        reauthProfile,
     ]);
 
     const onSubmitPassword = useCallback(
@@ -166,13 +192,22 @@ const Login = () => {
             e.preventDefault();
             setLoginError(null);
             try {
-                await login.mutateAsync({ server: serverUrl, username, password });
+                await login.mutateAsync({
+                    server: serverUrl,
+                    username,
+                    password,
+                    expectedUserId: reauthProfile?.jellyfinUserId,
+                });
                 navigate('/', { mode: 'reset' });
-            } catch {
-                setLoginError(t('login:invalid_credentials'));
+            } catch (error) {
+                setLoginError(
+                    error instanceof ProfileIdentityMismatchError
+                        ? t('login:login_failed')
+                        : t('login:invalid_credentials')
+                );
             }
         },
-        [serverUrl, username, password, login, navigate, t]
+        [serverUrl, username, password, login, navigate, t, reauthProfile]
     );
 
     const quickConnectUrl = getQuickConnectUrl(quickConnectCode);
@@ -181,6 +216,11 @@ const Login = () => {
         <div className="flex min-h-svh flex-col items-center justify-center gap-3 p-6">
             <div className="flex flex-col items-center gap-2">
                 <h1 className="text-2xl font-semibold">Littora</h1>
+                {reauthProfile && (
+                    <p className="text-sm text-muted-foreground">
+                        {t('login:login_to_jellyfin')}: {reauthProfile.displayName}
+                    </p>
+                )}
             </div>
 
             {step === 'server' && (
@@ -247,7 +287,7 @@ const Login = () => {
                     <FocusableButton variant="outline" onClick={() => setStep('password')}>
                         {t('login:sign_in_with_password')}
                     </FocusableButton>
-                    {!predefinedServerAddress && (
+                    {!predefinedServerAddress && !reauthProfile && (
                         <FocusableButton
                             variant="ghost"
                             onClick={() => {
@@ -287,6 +327,7 @@ const Login = () => {
                             setQuickConnectCode(null);
                             setQuickConnectSecret(undefined);
                             setQuickConnectError(null);
+                            setQuickConnectApproved(false);
                             setStep('method');
                         }}
                     >
@@ -326,6 +367,13 @@ const Login = () => {
                     </FocusableButton>
                 </form>
             )}
+
+            <FocusableButton
+                variant="ghost"
+                onClick={() => navigate('/profiles', { mode: 'reset' })}
+            >
+                {t('profiles:back_to_profiles')}
+            </FocusableButton>
         </div>
     );
 };
