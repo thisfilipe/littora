@@ -46,11 +46,11 @@ The published metadata for that exact version identifies the license as `GPL-3.0
 
 **Paths:** `.github/actions/tizen-build/action.yml` and `.github/actions/tizen-build/build.sh`
 
-The action metadata explicitly identifies this as a patched fork of [`sourcetoad/tizen-build-action@v1.1.2`](https://github.com/sourcetoad/tizen-build-action/tree/v1.1.2). That tag’s [`LICENSE.md`](https://github.com/sourcetoad/tizen-build-action/blob/v1.1.2/LICENSE.md) is MIT and names `Sourcetoad, LLC` with a 2021 copyright notice. The local action directory has no copy of that license file. The local script adds XML escaping for passwords and changes artifact handling relative to the cited upstream source.
+The action metadata explicitly identifies this as a patched fork of [`sourcetoad/tizen-build-action@v1.1.2`](https://github.com/sourcetoad/tizen-build-action/tree/v1.1.2). That tag’s [`LICENSE.md`](https://github.com/sourcetoad/tizen-build-action/blob/v1.1.2/LICENSE.md) is MIT and names `Sourcetoad, LLC` with a 2021 copyright notice. The local script adds XML escaping for passwords and changes artifact handling relative to the cited upstream source. The original MIT notice is preserved in the local action directory at [`.github/actions/tizen-build/LICENSE.md`](../.github/actions/tizen-build/LICENSE.md).
 
 The action is invoked by `.github/workflows/tizen-release.yml`; that release job is gated to `PelagicaApp/pelagica`, so Littora’s current workflow does not execute it. The script also downloads Tizen Studio over HTTP without an apparent checksum verification step.
 
-The local action includes the original MIT license notice in [`.github/actions/tizen-build/LICENSE.md`](../.github/actions/tizen-build/LICENSE.md), alongside its existing Sourcetoad attribution. Review the installer URL and integrity verification before enabling this action for Littora releases.
+Review the installer URL and integrity verification before enabling this action for Littora releases.
 
 ### Runtime studio logos
 

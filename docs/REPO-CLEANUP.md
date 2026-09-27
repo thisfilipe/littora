@@ -88,7 +88,7 @@ Review before reuse or publication: Pelagica logos and screenshots, app IDs and 
 - The Tizen, webOS, and web build workflow is present and contains no publishing credentials.
 - The copied Sourcetoad Tizen action retains its MIT license notice, and TMDB image use has the approved logo and required client attribution.
 - Unresolved publication identity and service decisions are recorded; inherited publishing workflows skip in the Littora repository.
-- Tizen, webOS, and web builds pass locally. The latest GitHub Actions build succeeded on `aaf81e2`; lint and formatting passed on `467f2b4`.
+- Tizen, webOS, and web builds pass locally. The latest GitHub Actions build succeeded on `11fcdc8`; lint and formatting passed on `467f2b4`.
 - GitHub's default branch is `main`. The active [main PR and CI ruleset](https://github.com/thisfilipe/littora/rules/24083663) requires PRs plus `build`, `lint`, and PR-target validation, blocks deletion and force-push, has no bypass actors, and requires zero approvals.
 - The local/remote branch refs match the intended flow: `develop` contains the Littora work and `main` remains at the selected Pelagica baseline.
 - Before distributing a build, resolve the inherited app IDs, signing identity, artwork, external service endpoints, and release destinations listed above.
