@@ -18,6 +18,7 @@ Give Littora a clear product identity and development workflow while retaining r
 - Do not publish a Littora release until app IDs, signing identities, artwork, service endpoints, release destinations, and required secrets have been reviewed.
 - Keep internal `@pelagica/*` package names for now to reduce unnecessary divergence from upstream. Revisit them if they become a public package or create user-facing confusion.
 - Keep the inherited Pelagica logo and screenshots temporarily during development; replace them with Littora-owned branding and screenshots of Littora user flows as the product matures.
+- Use a temporary, separate Tizen development identity for sideload tests so Littora can coexist with an installed Pelagica app; choose the production identity before distribution.
 
 ## Baseline
 
@@ -62,7 +63,8 @@ Give Littora a clear product identity and development workflow while retaining r
 
 - [x] Establish the product direction and distinguish planned work from shipped Littora releases.
 - [x] Update the shared TV login heading, browser titles, web app manifest, Jellyfin client names, and Tizen/webOS display titles to Littora.
-- [ ] Choose a unique Tizen application ID and signing identity before device distribution.
+- [x] Configure a separate temporary Tizen development app/package ID and local signing profile for side-by-side TV testing.
+- [ ] Choose the production Tizen application ID and signing identity before distribution.
 - [ ] Review webOS and desktop bundle identifiers before those platforms are distributed as Littora.
 - [ ] Repoint or consciously retain the Pelagica statistics, themes, studios, and translation services after reviewing their behavior and privacy implications.
 - [ ] Update release names, artifact names, package registry destinations, demo domains, and store manifests if those channels are adopted.
@@ -91,4 +93,4 @@ Review before reuse or publication: Pelagica logos and screenshots, app IDs and 
 - Tizen, webOS, and web builds pass locally. The latest GitHub Actions build succeeded on `11fcdc8`; lint and formatting passed on `467f2b4`.
 - GitHub's default branch is `main`. The active [main PR and CI ruleset](https://github.com/thisfilipe/littora/rules/24083663) requires PRs plus `build`, `lint`, and PR-target validation, blocks deletion and force-push, has no bypass actors, and requires zero approvals.
 - The local/remote branch refs match the intended flow: `develop` contains the Littora work and `main` remains at the selected Pelagica baseline.
-- Before distributing a build, resolve the inherited app IDs, signing identity, artwork, external service endpoints, and release destinations listed above.
+- Before distributing a build, resolve the production app IDs, signing identity, artwork, external service endpoints, and release destinations listed above.

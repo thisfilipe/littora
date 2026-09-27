@@ -33,7 +33,7 @@ pnpm install
 task tizen:build
 ```
 
-The bundle is written to `tizen/www/`. See [tizen/README.md](../tizen/README.md) for local packaging and device instructions. The Tizen app ID and signing profile are still inherited from Pelagica; do not publish a package until a Littora identity and signing setup are selected.
+The bundle is written to `tizen/www/`. See [tizen/README.md](../tizen/README.md) for local packaging and device instructions. Sideloaded development builds use the temporary `LittoraDev.littoraDev` app ID and local `littora-dev-author` signing profile so they can coexist with Pelagica. This is not the final distribution identity; choose a production app ID and signing setup before publishing.
 
 ## Validation status
 

@@ -8,7 +8,7 @@
 
 Littora builds on Pelagica's Jellyfin client and shared infrastructure. This repository is developing a distinct TV experience; inherited web and desktop code remains available as secondary targets while the TV client is stabilized. Android is a future consideration, not a current target.
 
-There is no stable Littora release or public demo yet. Packaging identifiers, branding assets, and some external service endpoints are still inherited from Pelagica and are being reviewed before distribution.
+There is no stable Littora release or public demo yet. Production packaging identifiers, branding assets, and some external service endpoints are still under review before distribution. Tizen sideload builds use a separate temporary development identity so they can coexist with Pelagica.
 
 Pelagica's logo and GitHub screenshots are retained temporarily as inherited materials. Littora-specific branding and screenshots of its own user flows are planned as the product matures; their provenance is tracked in the [asset and third-party audit](./docs/ASSET-PROVENANCE.md).
 

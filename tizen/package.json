@@ -10,7 +10,7 @@
         "format": "prettier --write .",
         "format:check": "prettier --check .",
         "preview": "vite preview",
-        "tizen:package": "tizen package -t wgt -s pelagica -- www"
+        "tizen:package": "tizen package -t wgt -s littora-dev-author -- www"
     },
     "dependencies": {
         "@noriginmedia/norigin-spatial-navigation": "^3.3.0",

@@ -1,13 +1,14 @@
 # Littora for Samsung Tizen
 
-This fork is in active development. The app ID and signing profile used below are still inherited from Pelagica; see [FORK_NOTES.md](../docs/FORK_NOTES.md). Do not publish the resulting package as a Littora release until a unique app identity and signing setup have been selected.
+Tizen sideload builds use the temporary `LittoraDev.littoraDev` app ID and local `littora-dev-author` signing profile. This lets the development build coexist with an installed Pelagica app. These identifiers are for local testing only; choose the production app ID and signing setup before publishing. See [FORK_NOTES.md](../docs/FORK_NOTES.md).
 
 ## Tasks
 
 ```bash
-task dev
+task tizen:dev
+task tizen:build
 task tizen:sim
-task tizen:deploy TV_IP=192.168.1.50
+task tizen:tv:deploy TV_IP=192.168.1.50
 ```
 
 ## Plain browser
@@ -35,24 +36,22 @@ Tizen Studio should be installed at `~/tizen-studio`. Put its CLI tools on `PATH
 export PATH="$HOME/tizen-studio/tools/ide/bin:$HOME/tizen-studio/tools:$PATH"
 ```
 
-Then create a local signing certificate and profile (Required before any package install. Pick your own password, this is a local dev keystore, not an account credential):
+Create a local development signing certificate and profile once. Use a local keystore password; it is not a Jellyfin or Samsung account password. Do not commit or share the keystore files or password:
 
 ```bash
-mkdir -p ~/tizen-studio-data/certs && cd ~/tizen-studio-data/certs
-tizen certificate -a pelagica -f pelagica-author -p <password> -n "Your Name"
-tizen security-profiles add -n pelagica -a ~/tizen-studio-data/certs/pelagica-author.p12 -p <password>
+task tizen:cert PASSWORD='<local-keystore-password>'
+task tizen:profile PASSWORD='<local-keystore-password>'
 ```
 
-`package.json`'s `tizen:package` script already targets the `pelagica` profile name.
+The signing profile and certificate are named `littora-dev-author`. The tasks use the Tizen Studio installation under `~/tizen-studio`.
 
 ## Package as a widget (.wgt)
 
 ```bash
-pnpm build
-pnpm tizen:package
+task tizen:package
 ```
 
-This runs `tizen package -t wgt -s pelagica -- www`, producing a `.wgt` in `www/`.
+This builds the app and creates a signed `.wgt` in `www/` using the local development profile.
 
 ## Run it — three options
 
@@ -70,13 +69,21 @@ Opens a windowed simulator loading the built app directly (no install/sdb step n
 
 **2. Real Samsung TV:**
 
-Enable Developer Mode on the TV (Apps -> find any app -> hold Enter -> Developer mode -> set your devices IP), then:
+Enable Developer Mode on the TV and enter the development computer's IP. Then use the TV's IP with the repository tasks:
 
 ```bash
-sdb connect <tv-ip>:26101
-tizen install -n www/<package-name>.wgt -t <tv-ip>:26101
-tizen run -p Pel4g1c4Ap.pelagica -t <tv-ip>:26101
+task tizen:tv:connect TV_IP=192.168.1.50
+task tizen:tv:install TARGET=192.168.1.50:26101
+task tizen:tv:run TARGET=192.168.1.50:26101
 ```
+
+Or build, connect, install, and launch in one step:
+
+```bash
+task tizen:tv:deploy TV_IP=192.168.1.50
+```
+
+The development package has its own Tizen identity. Keep it separate from the Pelagica app and use dedicated Jellyfin test accounts for profile validation.
 
 **3. x86_64 emulator (Intel Macs / Linux with KVM only):**
 

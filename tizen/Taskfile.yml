@@ -1,12 +1,12 @@
 version: '3'
 
 vars:
-    PROFILE: pelagica-author
-    APP_ID: Pel4g1c4Ap.pelagica
+    PROFILE: littora-dev-author
+    APP_ID: LittoraDev.littoraDev
     BUILD_DIR: www
     CERT_DIR: '{{.HOME}}/tizen-studio-data/certs'
-    CERT_NAME: pelagica-author
-    AUTHOR_NAME: Pelagica Dev
+    CERT_NAME: littora-dev-author
+    AUTHOR_NAME: Littora Dev
     TIZEN_STUDIO: '{{.HOME}}/tizen-studio'
     # go-task can't override PATH via `env:` (the OS-inherited PATH always wins),
     # so tizen/sdb/em-cli tasks prefix this onto $PATH inline instead.
