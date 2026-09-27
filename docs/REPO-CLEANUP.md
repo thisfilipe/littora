@@ -11,6 +11,7 @@ Give Littora a clear product identity and development workflow while retaining r
 ## Decisions
 
 - Use `develop` for active work and `main` for stable integration.
+- Keep GitHub's default branch as `main`; integrate changes from `develop` through pull requests.
 - Keep `upstream` pointed at Pelagica and preserve the existing Git history.
 - Describe Littora as a TV-first Jellyfin client fork, with Samsung Tizen as the first target.
 - Keep the existing GPLv3 license and identify the project as a modified downstream work.
@@ -35,7 +36,7 @@ Give Littora a clear product identity and development workflow while retaining r
 - [x] Run the existing lint/format workflow on `develop` pushes as well as `main`.
 - [x] Publish `develop` and set the local branch to track `origin/develop`.
 - [x] Restore remote `main` to the Pelagica baseline. The first Littora planning commit and all subsequent Littora work remain preserved on `develop`.
-- [ ] Review and configure the GitHub default branch and branch protection for the `develop` to `main` PR flow.
+- [x] Confirm `main` as GitHub's default branch and configure the [main PR and CI ruleset](https://github.com/thisfilipe/littora/rules/24083663).
 
 ### 2. Project documentation and provenance
 
@@ -87,6 +88,7 @@ Review before reuse or publication: Pelagica logos and screenshots, app IDs and 
 - The Tizen, webOS, and web build workflow is present and contains no publishing credentials.
 - The copied Sourcetoad Tizen action retains its MIT license notice, and TMDB image use has the approved logo and required client attribution.
 - Unresolved publication identity and service decisions are recorded; inherited publishing workflows skip in the Littora repository.
-- Tizen and web builds pass locally, and work has resumed on `develop`.
-- Before opening a PR, review the GitHub default branch and branch protection settings. The local/remote branch refs now match the intended flow: `develop` contains the Littora work and `main` is at the selected Pelagica baseline.
+- Tizen, webOS, and web builds pass locally. The latest GitHub Actions build succeeded on `aaf81e2`; lint and formatting passed on `467f2b4`.
+- GitHub's default branch is `main`. The active [main PR and CI ruleset](https://github.com/thisfilipe/littora/rules/24083663) requires PRs plus `build`, `lint`, and PR-target validation, blocks deletion and force-push, has no bypass actors, and requires zero approvals.
+- The local/remote branch refs match the intended flow: `develop` contains the Littora work and `main` remains at the selected Pelagica baseline.
 - Before distributing a build, resolve the inherited app IDs, signing identity, artwork, external service endpoints, and release destinations listed above.

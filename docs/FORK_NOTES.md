@@ -22,7 +22,7 @@ Littora is a TV-first Jellyfin client fork. Samsung Tizen and a shared household
 - `main` is the stable branch and receives changes through pull requests from `develop`.
 - `upstream` remains the Pelagica source remote; upstream changes should be reviewed and integrated deliberately into `develop`.
 
-The local `develop` branch was created from `c01b7ce` on 2026-09-27 and tracks `origin/develop`. Phase 1 and repository cleanup changes are committed there. Local and remote `main` both point to the Pelagica baseline `d551aa48a8ce74be01a136c0cbb61dde66ed7f9f`; the first Littora planning commit and subsequent Littora work remain in `develop` history. The GitHub default branch and branch protection settings have not been changed.
+The local `develop` branch was created from `c01b7ce` on 2026-09-27 and tracks `origin/develop`. Phase 1 and repository cleanup changes are committed there. Local and remote `main` both point to the Pelagica baseline `d551aa48a8ce74be01a136c0cbb61dde66ed7f9f`; the first Littora planning commit and subsequent Littora work remain in `develop` history. GitHub keeps `main` as the default branch and applies the [main PR and CI ruleset](https://github.com/thisfilipe/littora/rules/24083663), which requires PRs, build/lint/target validation, and prevents deletion and force-push.
 
 ## Development setup
 
@@ -37,7 +37,7 @@ The bundle is written to `tizen/www/`. See [tizen/README.md](../tizen/README.md)
 
 ## Validation status
 
-The Tizen and web builds passed on 2026-09-27; see the Phase 1 progress record for commands and warnings. The baseline was not built separately, and no release or deployment has been performed for Littora.
+The Tizen, webOS, and web builds passed locally on 2026-09-27. GitHub Actions build checks passed on `aaf81e2`, and lint/format checks passed on `467f2b4`; see the Phase 1 progress record for the earlier build commands and warnings. The baseline was not built separately, and no release or deployment has been performed for Littora.
 
 ## License and attribution
 
