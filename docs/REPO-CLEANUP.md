@@ -16,6 +16,7 @@ Give Littora a clear product identity and development workflow while retaining r
 - Keep the existing GPLv3 license and identify the project as a modified downstream work.
 - Do not publish a Littora release until app IDs, signing identities, artwork, service endpoints, release destinations, and required secrets have been reviewed.
 - Keep internal `@pelagica/*` package names for now to reduce unnecessary divergence from upstream. Revisit them if they become a public package or create user-facing confusion.
+- Keep the inherited Pelagica logo and screenshots temporarily during development; replace them with Littora-owned branding and screenshots of Littora user flows as the product matures.
 
 ## Baseline
 
@@ -49,12 +50,12 @@ Give Littora a clear product identity and development workflow while retaining r
 - [x] Retain the GPLv3 license text and disclose the Pelagica source in the README.
 - [x] Record that the repository still needs a full dependency, artwork, and third-party action license review.
 - [x] Inventory the provenance and license status of bundled logos, screenshots, translations, and the local Tizen build action; record unresolved items in [ASSET-PROVENANCE.md](./ASSET-PROVENANCE.md).
-- [ ] Preserve the Sourcetoad MIT license notice with the local Tizen build action.
+- [x] Preserve the Sourcetoad MIT license notice with the local Tizen build action in [`.github/actions/tizen-build/LICENSE.md`](../.github/actions/tizen-build/LICENSE.md).
 - [ ] Review the Tizen Studio installer download for HTTPS and integrity verification before enabling the action for Littora releases.
 - [ ] Review the remaining external GitHub Actions and direct dependency licenses before release.
-- [ ] Replace or clearly distinguish Pelagica marks and artwork before publishing Littora builds.
-- [ ] Remove or replace unused GitHub screenshots containing third-party media artwork with no recorded redistribution permission before using them in public documentation.
-- [ ] Decide whether to retain Pelagica's studio-logo catalog; if retained, add TMDB's required approved logo and attribution notice.
+- [ ] Create Littora-owned marks and app artwork as the product identity matures.
+- [ ] Replace the inherited GitHub screenshots with screenshots of Littora user flows using a rights-cleared demo library as the product matures.
+- [x] Retain the studio-logo catalog for now and add TMDB's approved logo and required attribution notice to the TV and web/desktop About/Credits areas.
 
 ### 4. Product and runtime identity
 
@@ -84,6 +85,7 @@ Review before reuse or publication: Pelagica logos and screenshots, app IDs and 
 - README and provenance notes accurately identify Littora and its upstream source.
 - Local development uses `develop`; the PR workflow expects `develop` to `main`.
 - The Tizen and web build workflows are present and contain no publishing credentials.
+- The copied Sourcetoad Tizen action retains its MIT license notice, and TMDB image use has the approved logo and required client attribution.
 - Unresolved publication identity and service decisions are recorded; inherited publishing workflows skip in the Littora repository.
 - Tizen and web builds pass locally, and work has resumed on `develop`.
 - Before opening a PR, review the GitHub default branch and branch protection settings. The local/remote branch refs now match the intended flow: `develop` contains the Littora work and `main` is at the selected Pelagica baseline.

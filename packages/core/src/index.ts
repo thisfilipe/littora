@@ -16,6 +16,7 @@ export * from './api/seerr/types';
 export * from './api/stats';
 export * from './api/themes';
 export * from './collector/tvStatsCollector';
+export * from './components/TmdbAttribution';
 export * from './hooks/continue/useContinueWatchingAndNextUp';
 export * from './hooks/continue/useNextUp';
 export * from './hooks/continue/useResumeItems';

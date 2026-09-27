@@ -2,7 +2,7 @@
 
 **Audit date:** 2026-09-27
 
-**Audit status:** Initial inventory complete; unresolved rights and service decisions are listed below.
+**Audit status:** Initial inventory complete. Temporary asset and service decisions are recorded below; other unresolved rights and service reviews remain open.
 
 ## Scope and method
 
@@ -24,15 +24,15 @@ The inventory compares tracked assets and the local action with that baseline, c
 
 The artwork is inherited unchanged from the selected Pelagica baseline. The SVGs identify the graphic as `Pelagica-logo`; the PNG/ICNS/ICO variants use the same jellyfish mark. The repository has no asset-specific license or attribution record for these files. The root `LICENSE` contains the project’s GPLv3 license text, but the repository does not document a separate grant for use of Pelagica branding as Littora’s identity.
 
-**Recommended action:** replace these with Littora-owned artwork or obtain and record permission to reuse the Pelagica marks before distributing Littora builds. Keep the source attribution while inherited artwork remains in the repository.
+**Decision:** keep the inherited Pelagica artwork during development. It remains upstream material, not Littora-created branding. Plan to replace it with Littora-owned artwork as the product identity matures, and retain this provenance record until then.
 
 ### GitHub screenshots
 
 **Paths:** `.github/assets/{custom_sections,episode,home,library,music,search,series}.webp`
 
-These seven screenshots are inherited unchanged from Pelagica. Visual inspection found third-party TV/anime posters and stills, music album covers, and artist imagery. The repository does not record their source or redistribution permission. No current README, application source, or workflow references these WebP files, so they appear to be unused in the current Littora checkout.
+These seven screenshots are inherited unchanged from Pelagica. Visual inspection found third-party TV/anime posters and stills, music album covers, and artist imagery. The repository does not record their source or redistribution permission. No current README links to these WebP files, and no application source or workflow uses them, so they appear to be unused in the current Littora checkout.
 
-**Recommended action:** remove the unused screenshots from a later cleanup change, or replace them with screenshots made from a rights-cleared demo library before linking them from public documentation. This audit does not remove or replace them.
+**Decision:** keep the inherited screenshots for now. As Littora matures, replace them with screenshots of Littora's own user flows, using a rights-cleared demo library. The current README and application do not use these files.
 
 ### Shared translations
 
@@ -50,7 +50,7 @@ The action metadata explicitly identifies this as a patched fork of [`sourcetoad
 
 The action is invoked by `.github/workflows/tizen-release.yml`; that release job is gated to `PelagicaApp/pelagica`, so Littora’s current workflow does not execute it. The script also downloads Tizen Studio over HTTP without an apparent checksum verification step.
 
-**Recommended action:** include the original MIT license notice with the copied action and keep the Sourcetoad attribution alongside a short record of Littora/Pelagica patches. Review the installer URL and integrity verification before enabling this action for Littora releases.
+The local action includes the original MIT license notice in [`.github/actions/tizen-build/LICENSE.md`](../.github/actions/tizen-build/LICENSE.md), alongside its existing Sourcetoad attribution. Review the installer URL and integrity verification before enabling this action for Littora releases.
 
 ### Runtime studio logos
 
@@ -58,14 +58,14 @@ The action is invoked by `.github/workflows/tizen-release.yml`; that release job
 
 This is an inherited, live dependency on a Pelagica-hosted catalog and TMDB-hosted logo images, rather than a bundled asset. TMDB's official FAQ says applications using its API/data/images must attribute TMDB, display an approved TMDB logo, and place the notice “This product uses the TMDB API but is not endorsed or certified by TMDB.” within an About or Credits section. The Littora source search found no TMDB logo or attribution notice. TMDB describes free API use as non-commercial with attribution; commercial use requires a separate license discussion.
 
-**Recommended action:** decide whether Littora will keep this catalog. If it does, add the approved TMDB logo and required notice in an About/Credits area, keep the logo subordinate to Littora branding, and confirm the intended distribution fits TMDB's current terms. Otherwise, maintain an independent catalog with a documented source.
+**Decision:** retain the current catalog integration for now. The TV client's About section and the web/desktop client's About & credits dialog show TMDB's approved logo and required notice. The logo is kept small relative to the application identity. Review TMDB's current terms again before any commercial use.
 
 ## License and review boundaries
 
 - The project README declares GNU GPL v3.0, and the root `LICENSE` contains the GPLv3 text. This inventory does not infer asset or trademark permission from the root license.
-- The Sourcetoad action is a separate MIT-licensed component and needs its MIT notice preserved with the copied code.
+- The Sourcetoad action is a separate MIT-licensed component; its original notice is preserved at [`.github/actions/tizen-build/LICENSE.md`](../.github/actions/tizen-build/LICENSE.md).
 - The translation dependency declares `GPL-3.0-only` in the registry metadata; its exact resolved version and source repository are recorded above.
-- TMDB's official attribution rules apply to the image usage identified above. No TMDB logo or required notice was found in the inspected application sources.
+- TMDB's official attribution rules apply to the image usage identified above. The approved blue horizontal logo is bundled at [`packages/core/src/assets/tmdb-blue-long.svg`](../packages/core/src/assets/tmdb-blue-long.svg), and both client interfaces display the required notice in an About/Credits area.
 - The licenses of the remaining direct dependencies and external GitHub Actions (`actions/*`, `arduino/setup-task`, `peaceiris/actions-gh-pages`, `docker/*`, and `peter-evans/repository-dispatch`) were not reviewed here.
 - This inventory records repository and upstream evidence. It does not certify rights for items whose specific license or permission is undocumented.
 
@@ -81,3 +81,4 @@ This is an inherited, live dependency on a Pelagica-hosted catalog and TMDB-host
 - [TMDB API FAQ and attribution requirements](https://developer.themoviedb.org/docs/faq)
 - [TMDB API terms of use](https://www.themoviedb.org/documentation/api/terms-of-use)
 - [TMDB approved logos and attribution assets](https://www.themoviedb.org/about/logos-attribution)
+- [TMDB approved primary long blue logo (SVG)](https://www.themoviedb.org/assets/v4/logos/v2/blue_long_2-9665a76b1ae401a510ec1e0ca40ddcb3b0cfe45f1d51b77a308fea0845885648.svg)

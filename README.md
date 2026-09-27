@@ -10,6 +10,8 @@ Littora builds on Pelagica's Jellyfin client and shared infrastructure. This rep
 
 There is no stable Littora release or public demo yet. Packaging identifiers, branding assets, and some external service endpoints are still inherited from Pelagica and are being reviewed before distribution.
 
+Pelagica's logo and GitHub screenshots are retained temporarily as inherited materials. Littora-specific branding and screenshots of its own user flows are planned as the product matures; their provenance is tracked in the [asset and third-party audit](./docs/ASSET-PROVENANCE.md).
+
 ## Development status
 
 - [Development plan](./docs/PLAN.md)
@@ -37,3 +39,5 @@ Littora is not an official Pelagica release and is not affiliated with the Jelly
 ## License
 
 This project is distributed under the GNU General Public License v3.0. See [LICENSE](./LICENSE). The project remains a modified work based on Pelagica; original applicable notices and the GPLv3 terms are retained.
+
+See the [asset and third-party audit](./docs/ASSET-PROVENANCE.md) for the retained upstream assets, Sourcetoad action's MIT notice, and TMDB attribution.

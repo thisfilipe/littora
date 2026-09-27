@@ -41,6 +41,6 @@ The Tizen and web builds passed on 2026-09-27; see the Phase 1 progress record f
 
 ## License and attribution
 
-The repository retains the upstream `LICENSE` file, which contains the GNU GPL v3.0 text. Littora is a modified downstream work; preserve applicable upstream notices and mark Littora changes and dates when distributing modified versions. This note records provenance and does not replace the license text or a full review of dependency, artwork, and third-party action licenses.
+The repository retains the upstream `LICENSE` file, which contains the GNU GPL v3.0 text. Littora is a modified downstream work; preserve applicable upstream notices and mark Littora changes and dates when distributing modified versions. This note records provenance and does not replace the license text or a full review of dependency, artwork, and third-party action licenses. See the [asset and third-party provenance audit](./ASSET-PROVENANCE.md) for retained Pelagica materials, TMDB attribution, and the copied action notice.
 
 For the exact source terms, see the [GNU GPL v3.0](https://www.gnu.org/licenses/gpl.en.html), especially Sections 4 and 5 on preserving notices and identifying modified source versions.

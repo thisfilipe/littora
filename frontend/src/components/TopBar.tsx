@@ -13,6 +13,7 @@ import {
     Fingerprint,
     Globe,
     House,
+    Info,
     ImageIcon,
     Laptop,
     Library,
@@ -72,7 +73,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
-import { useCurrentUser } from '@pelagica/core';
+import { TmdbAttribution, useCurrentUser } from '@pelagica/core';
 import { useUserViews } from '@pelagica/core';
 import { useConfig } from '@pelagica/core';
 import { useTheme } from '@/components/theme-provider';
@@ -621,6 +622,21 @@ const UserMenu = () => {
                         </DropdownMenuSub>
                     </>
                 )}
+
+                <Dialog>
+                    <DialogTrigger asChild>
+                        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                            <Info className="text-muted-foreground" />
+                            About &amp; credits
+                        </DropdownMenuItem>
+                    </DialogTrigger>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>About &amp; credits</DialogTitle>
+                        </DialogHeader>
+                        <TmdbAttribution className="flex flex-col gap-3 text-sm text-muted-foreground" />
+                    </DialogContent>
+                </Dialog>
 
                 <AuthorizeQuickConnectDialog
                     onAuthorize={onAuthorizeQuickConnect}

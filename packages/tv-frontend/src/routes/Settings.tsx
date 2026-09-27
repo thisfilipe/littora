@@ -2,6 +2,7 @@ import {
     getServerUrl,
     getUserProfileImageUrl,
     logout,
+    TmdbAttribution,
     useCurrentUser,
     useServerInfo,
 } from '@pelagica/core';
@@ -148,6 +149,7 @@ const Settings = () => {
                     <p className="text-muted-foreground">
                         {t('settings:version_label')} {pkg.version}
                     </p>
+                    <TmdbAttribution className="mt-4 flex flex-col gap-2 text-sm text-muted-foreground" />
                 </div>
             </SettingsSection>
         </div>
