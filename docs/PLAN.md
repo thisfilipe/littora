@@ -270,7 +270,7 @@ Switching profiles ends the old local session while preserving that profile's us
 
 ### Remove profile
 
-Explicit action requiring confirmation. The profile must already be signed out, and a different profile must be active before removal is available. This prevents removing the last active identity from the TV.
+Explicit action requiring confirmation. Only signed-out profiles can be removed, and the active profile is never removable. Removal remains available when no profile is active, including when it is the last saved profile.
 
 This deletes the locally saved token/profile entry.
 
@@ -327,7 +327,7 @@ Requirements:
 - "Add profile" presented as a profile tile;
 - show the most recently used server by default, with a server switcher when multiple servers are saved;
 - mark profiles that need authentication as disconnected;
-- show the focused profile's Sign Out or Delete action below its avatar; after sign-out, Delete is available only from another active profile;
+- show the focused profile's Sign Out or Delete action below its avatar; after sign-out, Delete is available even when no profile is active;
 - while no profile is active, Back must not reveal Home; Back at the root picker may exit the app;
 - no keyboard required for normal switching.
 
@@ -347,7 +347,7 @@ If the existing implementation only supports web storage, encapsulate all token 
 - Switching between profiles clears the previous profile's cached identity data.
 - Restarting the app returns to the profile picker.
 - Switching profiles keeps the old profile's valid saved credentials; explicit Sign Out requires authentication on the next selection.
-- Removing a signed-out profile requires confirmation and another active profile, and leaves the server and all other profiles intact.
+- Removing a signed-out profile requires confirmation, never removes the active identity, and leaves the server and all other profiles intact.
 - A failed/expired profile authentication keeps its tile and server, and cannot enter Home until a profile is authenticated.
 - Existing single-user installs migrate without losing access.
 
