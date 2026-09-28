@@ -10,6 +10,8 @@ export interface SavedProfile {
     jellyfinUserId: string;
     accessToken: string;
     displayName: string;
+    /** Jellyfin username used for password reauthentication, when known. */
+    username?: string;
     avatarUrl?: string;
     lastUsedAt?: number;
     requiresAuthentication?: boolean;
@@ -26,5 +28,6 @@ export interface AuthenticatedProfileInput {
     jellyfinUserId: string;
     accessToken: string;
     displayName: string;
+    username?: string;
     avatarUrl?: string;
 }

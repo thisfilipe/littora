@@ -41,6 +41,7 @@ export function useLogin() {
                 jellyfinUserId: userId,
                 accessToken,
                 displayName: res.data.User?.Name || userId,
+                username,
             });
             try {
                 await loginToSeerr(server, username, password);

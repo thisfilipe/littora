@@ -67,6 +67,7 @@ export function useQuickConnectAuthenticate() {
                 jellyfinUserId: userId,
                 accessToken,
                 displayName: res.data.User?.Name || userId,
+                username: res.data.User?.Name || undefined,
             });
 
             return { api, user: res.data.User };

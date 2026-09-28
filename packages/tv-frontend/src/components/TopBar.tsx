@@ -1,4 +1,4 @@
-import { getActiveProfile, useConfig } from '@pelagica/core';
+import { getActiveProfile, getUserProfileImageUrl, useConfig } from '@pelagica/core';
 import { useTranslation } from 'react-i18next';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { House, Library, Search, Settings } from 'lucide-react';
@@ -16,6 +16,9 @@ const TopBar = ({ activeItem }: { activeItem?: TopBarItem }) => {
     const layerId = useLayerId();
     const activeProfile = getActiveProfile();
     const profileName = activeProfile?.displayName ?? t('profiles:switch_profile');
+    const profileAvatarUrl =
+        activeProfile?.avatarUrl ||
+        (activeProfile ? getUserProfileImageUrl(activeProfile.jellyfinUserId) : '');
     const profileInitials = profileName
         .trim()
         .split(/\s+/)
@@ -92,13 +95,14 @@ const TopBar = ({ activeItem }: { activeItem?: TopBarItem }) => {
 
                     <FocusableNavLink
                         to="/profiles"
+                        mode="push"
                         focusKey={topBarFocusKey('profiles', layerId)}
                         active={activeItem === 'profiles'}
                         className="max-w-48"
                     >
                         <Avatar size="sm" className="rounded-md">
                             <AvatarImage
-                                src={activeProfile?.avatarUrl}
+                                src={profileAvatarUrl}
                                 alt={profileName}
                             />
                             <AvatarFallback className="rounded-md text-[0.6rem]">

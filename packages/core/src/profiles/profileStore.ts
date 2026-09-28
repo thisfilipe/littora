@@ -247,6 +247,7 @@ export function saveAuthenticatedProfile(input: AuthenticatedProfileInput): Save
         jellyfinUserId: userId,
         accessToken: input.accessToken,
         displayName: input.displayName.trim() || userId,
+        username: input.username?.trim() || existing?.username || undefined,
         avatarUrl: input.avatarUrl ?? existing?.avatarUrl,
         lastUsedAt: Date.now(),
         requiresAuthentication: false,
@@ -288,18 +289,24 @@ export function leaveSession(): void {
     });
 }
 
-export function markActiveProfileRequiresAuthentication(): SavedProfile | null {
+/** Retains a profile but requires credentials before it can be activated again. */
+export function disconnectSavedProfile(profileId: string): SavedProfile | null {
     const storage = browserStorage();
     const store = readStore(storage);
-    const profile = store.profiles.find(
-        (candidate) => candidate.id === store.session.activeProfileId
-    );
+    const profile = store.profiles.find((candidate) => candidate.id === profileId);
     if (!profile) return null;
 
     profile.requiresAuthentication = true;
-    store.session.activeProfileId = null;
+    if (store.session.activeProfileId === profile.id) {
+        store.session.activeProfileId = null;
+    }
     writeStore(storage, store);
     return copyProfile(profile);
+}
+
+export function markActiveProfileRequiresAuthentication(): SavedProfile | null {
+    const activeProfile = getActiveProfile();
+    return activeProfile ? disconnectSavedProfile(activeProfile.id) : null;
 }
 
 export function removeSavedProfile(profileId: string): void {

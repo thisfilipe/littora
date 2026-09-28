@@ -1,8 +1,8 @@
+import './i18n/registerProfiles';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '@/lib/query-client';
 import { LayerStackProvider, LayerStackView } from '@/router';
 import { Toaster } from './components/ui/toast';
-import StatsConsentModal from './components/StatsConsentModal';
 
 function App() {
     return (
@@ -10,7 +10,6 @@ function App() {
             <Toaster />
             <LayerStackProvider>
                 <LayerStackView />
-                <StatsConsentModal />
             </LayerStackProvider>
         </QueryClientProvider>
     );

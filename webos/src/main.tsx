@@ -1,7 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { init } from '@noriginmedia/norigin-spatial-navigation';
-import { initTvStatsCollector, setClientInfo } from '@pelagica/core';
+import { setClientInfo } from '@pelagica/core';
 import { getNavigationAdapter, initGamepadNavigation } from '@pelagica/tv-platform';
 import App from '@pelagica/tv-frontend';
 import pkg from '../package.json' with { type: 'json' };
@@ -13,7 +13,6 @@ import '@pelagica/tv-frontend/theme.css';
 init();
 initGamepadNavigation();
 setClientInfo({ name: 'Littora webOS', version: pkg.version, platform: 'webos' });
-initTvStatsCollector();
 getNavigationAdapter().init();
 
 createRoot(document.getElementById('root')!).render(

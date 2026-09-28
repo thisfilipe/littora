@@ -35,6 +35,9 @@ task tizen:build
 
 The bundle is written to `tizen/www/`. See [tizen/README.md](../tizen/README.md) for local packaging and device instructions. Sideloaded development builds use the temporary `LittoraDev.littoraDev` app ID and expect a local `littora-dev-author` Samsung TV signing profile so they can coexist with Pelagica. Create that profile for the reference TV; it is not the final distribution identity. Choose a production app ID and signing setup before publishing.
 
+For the localization layout and how to add Littora-owned translations, see
+[LOCALIZATION.md](./LOCALIZATION.md).
+
 ## Validation status
 
 The Tizen, webOS, and web builds passed locally on 2026-09-27. GitHub Actions build checks passed on `aaf81e2`, and lint/format checks passed on `467f2b4`; see the Phase 1 progress record for the earlier build commands and warnings. The baseline was not built separately, and no release or deployment has been performed for Littora.

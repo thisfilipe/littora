@@ -14,22 +14,36 @@ const FocusableButton = ({
     size = 'default',
     floating = false,
     focusKey,
+    focusRequest,
+    focusedClassName,
+    onNavigationFocus,
+    onNavigationBlur,
     ...props
 }: React.ComponentProps<typeof Button> & {
     autoFocus?: boolean;
     floating?: boolean;
     focusKey?: string;
+    focusRequest?: number;
+    focusedClassName?: string;
+    onNavigationFocus?: () => void;
+    onNavigationBlur?: () => void;
 }) => {
     const { ref, focused, focusSelf } = useFocusable<object, HTMLButtonElement>({
         focusKey,
         focusOnHover: true,
         onEnterPress: () => ref.current?.click(),
+        onFocus: onNavigationFocus,
+        onBlur: onNavigationBlur,
     });
     const isLayerActive = useLayerActive();
 
     useEffect(() => {
         if (isLayerActive && autoFocus) focusSelf();
     }, [isLayerActive, autoFocus, focusSelf]);
+
+    useEffect(() => {
+        if (isLayerActive && focusRequest !== undefined) focusSelf();
+    }, [isLayerActive, focusRequest, focusSelf]);
 
     useScrollIntoViewOnFocus(ref, focused);
 
@@ -52,7 +66,11 @@ const FocusableButton = ({
         <Button
             ref={ref}
             size={size}
-            className={cn(focused && (compact ? FOCUS_RING_COMPACT : FOCUS_RING_LARGE), className)}
+            className={cn(
+                focused && (compact ? FOCUS_RING_COMPACT : FOCUS_RING_LARGE),
+                className,
+                focused && focusedClassName
+            )}
             {...props}
         />
     );

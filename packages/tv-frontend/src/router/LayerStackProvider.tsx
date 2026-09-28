@@ -1,6 +1,11 @@
 import { createContext, useCallback, useContext, useEffect, useReducer, useRef } from 'react';
 import type { Dispatch, ReactNode } from 'react';
-import { leaveSession, resetAuthRedirectHandler, setAuthRedirectHandler } from '@pelagica/core';
+import {
+    getActiveProfile,
+    leaveSession,
+    resetAuthRedirectHandler,
+    setAuthRedirectHandler,
+} from '@pelagica/core';
 import { getNavigationAdapter, onBackKey } from '@pelagica/tv-platform';
 import { routes } from './routes';
 import { matchRoute, parsePath } from './match';
@@ -8,6 +13,7 @@ import type { Layer, StackAction, StackState } from './types';
 
 let layerIdCounter = 0;
 const nextLayerId = () => `layer-${++layerIdCounter}`;
+const SESSION_ROUTES = new Set(['/profiles', '/login']);
 
 export function buildLayer(to: string): Layer {
     const { pathname, search } = parsePath(to);
@@ -57,6 +63,15 @@ export function LayerStackProvider({ children }: { children: ReactNode }) {
 
     console.debug('Layers:', state.layers.map((layer) => layer.pathname).join(' -> '));
 
+    const topLayer = state.layers[state.layers.length - 1];
+    const topPath = topLayer?.pathname;
+
+    useEffect(() => {
+        if (topPath && !SESSION_ROUTES.has(topPath) && !getActiveProfile()) {
+            dispatch({ type: 'RESET', to: '/profiles' });
+        }
+    }, [topPath, dispatch]);
+
     const interceptRef = useRef<(() => boolean) | null>(null);
     const setIntercept = useCallback((handler: (() => boolean) | null) => {
         interceptRef.current = handler;
@@ -66,13 +81,36 @@ export function LayerStackProvider({ children }: { children: ReactNode }) {
         return onBackKey(() => {
             if (interceptRef.current?.()) return;
 
+            const activeProfile = getActiveProfile();
+            const currentPath = state.layers[state.layers.length - 1]?.pathname;
+            if (!activeProfile) {
+                if (currentPath === '/login' && state.layers.length > 1) {
+                    const previousPath = state.layers[state.layers.length - 2]?.pathname;
+                    if (previousPath === '/profiles') {
+                        dispatch({ type: 'POP' });
+                    } else {
+                        dispatch({ type: 'RESET', to: '/profiles' });
+                    }
+                } else if (currentPath === '/profiles') {
+                    // Never pop from the picker into a protected screen without a session.
+                    if (state.layers.length > 1) {
+                        dispatch({ type: 'RESET', to: '/profiles' });
+                    } else {
+                        getNavigationAdapter().exitApp();
+                    }
+                } else {
+                    dispatch({ type: 'RESET', to: '/profiles' });
+                }
+                return;
+            }
+
             if (state.layers.length === 1) {
                 getNavigationAdapter().exitApp();
             } else {
                 dispatch({ type: 'POP' });
             }
         });
-    }, [state.layers.length]);
+    }, [state.layers, dispatch]);
 
     return (
         <StackStateContext.Provider value={state}>

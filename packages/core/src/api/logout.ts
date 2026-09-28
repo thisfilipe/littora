@@ -1,4 +1,4 @@
-import { leaveSession } from '../profiles/profileStore';
+import { markActiveProfileRequiresAuthentication } from '../profiles/profileStore';
 import { getApi } from './getApi';
 import { getSessionApi } from '@jellyfin/sdk/lib/utils/api/session-api';
 import type { QueryClient } from '@tanstack/react-query';
@@ -10,7 +10,8 @@ export async function logout(queryClient: QueryClient) {
         await sessionApi.reportSessionEnded();
     } finally {
         await logoutFromSeerr();
-        leaveSession();
+        // Explicit sign-out keeps the profile tile, but asks for credentials next time.
+        markActiveProfileRequiresAuthentication();
         queryClient.removeQueries();
     }
 }
