@@ -1,6 +1,6 @@
 import type { ComponentType } from 'react';
 
-export type TopBarItem = 'home' | 'library' | 'search' | 'settings';
+export type TopBarItem = 'home' | 'library' | 'search' | 'settings' | 'profiles';
 
 export function topBarFocusKey(item: TopBarItem, layerId: string): string {
     return `topbar-${layerId}-${item}`;

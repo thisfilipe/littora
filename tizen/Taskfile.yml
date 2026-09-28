@@ -1,12 +1,9 @@
 version: '3'
 
 vars:
-    PROFILE: pelagica-author
-    APP_ID: Pel4g1c4Ap.pelagica
+    PROFILE: littora-dev-author
+    APP_ID: LittoraDev.littoraDev
     BUILD_DIR: www
-    CERT_DIR: '{{.HOME}}/tizen-studio-data/certs'
-    CERT_NAME: pelagica-author
-    AUTHOR_NAME: Pelagica Dev
     TIZEN_STUDIO: '{{.HOME}}/tizen-studio'
     # go-task can't override PATH via `env:` (the OS-inherited PATH always wins),
     # so tizen/sdb/em-cli tasks prefix this onto $PATH inline instead.
@@ -73,23 +70,8 @@ tasks:
         cmds:
             - pnpm dlx shadcn@latest add {{.CLI_ARGS}}
 
-    cert:
-        desc: 'Generate a local Tizen author certificate (task tizen:cert PASSWORD=...)'
-        requires:
-            vars: [PASSWORD]
-        cmds:
-            - mkdir -p {{.CERT_DIR}}
-            - cd {{.CERT_DIR}} && PATH="{{.TIZEN_BIN}}:$PATH" tizen certificate -a {{.PROFILE}} -f {{.CERT_NAME}} -p {{.PASSWORD}} -n "{{.AUTHOR_NAME}}"
-
-    profile:
-        desc: 'Register the local signing profile (task tizen:profile PASSWORD=...)'
-        requires:
-            vars: [PASSWORD]
-        cmds:
-            - PATH="{{.TIZEN_BIN}}:$PATH" tizen security-profiles add -n {{.PROFILE}} -a {{.CERT_DIR}}/{{.CERT_NAME}}.p12 -p {{.PASSWORD}}
-
     package:
-        desc: Package www/ into a signed .wgt (requires tizen:cert + tizen:profile once)
+        desc: Package www/ into a signed .wgt using the local Samsung TV profile
         deps: [build]
         cmds:
             - PATH="{{.TIZEN_BIN}}:$PATH" tizen package -t wgt -s {{.PROFILE}} -- {{.BUILD_DIR}}

@@ -1,7 +1,8 @@
 import {
-    clearCredentials,
     getServerUrl,
     getUserProfileImageUrl,
+    logout,
+    TmdbAttribution,
     useCurrentUser,
     useServerInfo,
 } from '@pelagica/core';
@@ -90,8 +91,9 @@ const Settings = () => {
                     <div className="flex flex-wrap gap-2">
                         <FocusableButton
                             onClick={() => {
-                                clearCredentials();
-                                navigate('/login', { mode: 'reset' });
+                                void logout(queryClient)
+                                    .catch(() => undefined)
+                                    .finally(() => navigate('/profiles', { mode: 'reset' }));
                             }}
                         >
                             <LogOut />
@@ -147,6 +149,7 @@ const Settings = () => {
                     <p className="text-muted-foreground">
                         {t('settings:version_label')} {pkg.version}
                     </p>
+                    <TmdbAttribution className="mt-4 flex flex-col gap-2 text-sm text-muted-foreground" />
                 </div>
             </SettingsSection>
         </div>

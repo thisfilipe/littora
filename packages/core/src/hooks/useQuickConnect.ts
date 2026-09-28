@@ -1,8 +1,9 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createApi } from '../api/jellyfinClient';
 import { getApi } from '../api/getApi';
 import { getAuthenticationApi } from '@jellyfin/sdk/lib/utils/api/authentication-api';
-import { saveCredentials } from '../utils/localstorageCredentials';
+import { saveAuthenticatedProfile } from '../profiles/profileStore';
+import { ProfileIdentityMismatchError } from '../profiles/errors';
 
 export function useQuickConnectInitiate() {
     return useMutation({
@@ -34,8 +35,18 @@ export function useQuickConnectStatus(
 }
 
 export function useQuickConnectAuthenticate() {
+    const queryClient = useQueryClient();
+
     return useMutation({
-        mutationFn: async ({ server, secret }: { server: string; secret: string }) => {
+        mutationFn: async ({
+            server,
+            secret,
+            expectedUserId,
+        }: {
+            server: string;
+            secret: string;
+            expectedUserId?: string;
+        }) => {
             const api = createApi(server);
             const res = await getAuthenticationApi(api).authenticateWithQuickConnect({
                 quickConnectDto: {
@@ -45,8 +56,19 @@ export function useQuickConnectAuthenticate() {
 
             const accessToken = res.data.AccessToken || '';
             const userId = res.data.User?.Id || '';
+            if (expectedUserId && userId !== expectedUserId) {
+                throw new ProfileIdentityMismatchError();
+            }
 
-            saveCredentials(server, userId, accessToken);
+            await queryClient.cancelQueries();
+            queryClient.removeQueries();
+            saveAuthenticatedProfile({
+                serverUrl: server,
+                jellyfinUserId: userId,
+                accessToken,
+                displayName: res.data.User?.Name || userId,
+                username: res.data.User?.Name || undefined,
+            });
 
             return { api, user: res.data.User };
         },

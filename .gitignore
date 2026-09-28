@@ -30,6 +30,7 @@ branding
 *.sw?
 
 .task/
+.firecrawl/
 /backend/cache/
 /cache/
 

@@ -1,12 +1,12 @@
 name: Feature Request
-description: Suggest an idea or enhancement for Pelagica
+description: Suggest an idea or enhancement for Littora
 title: '[FEATURE] '
 labels: [enhancement]
 body:
   - type: checkboxes
     attributes:
       label: Is there an existing feature request for this?
-      description: Please [search here](https://github.com/PelagicaApp/pelagica/issues?q=is%3Aissue) to see if someone else has already suggested this.
+      description: Please [search Littora issues](https://github.com/thisfilipe/littora/issues?q=is%3Aissue) to see if someone has already suggested this.
       options:
         - label: I have searched the existing issues before opening this feature request.
           required: true
@@ -16,7 +16,7 @@ body:
     attributes:
       label: Description
       description: A clear and concise description of the feature you'd like to see.
-      placeholder: I would like Pelagica to...
+      placeholder: I would like Littora to...
     validations:
       required: true
 

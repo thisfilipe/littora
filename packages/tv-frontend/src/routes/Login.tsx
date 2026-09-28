@@ -1,11 +1,13 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
-import { useNavigate } from '@/router';
+import { useNavigate, useSearchParams } from '@/router';
 import { useTranslation } from 'react-i18next';
 import {
     getJellyfinInstance,
+    getSavedProfiles,
+    getSavedServers,
     getServerUrl,
-    saveServerUrl,
+    ProfileIdentityMismatchError,
     useDiscoverServers,
     useLogin,
     useQuickConnectAuthenticate,
@@ -31,19 +33,45 @@ const ErrorMessage = ({ message }: { message: string }) => (
 );
 
 const Login = () => {
-    const { t } = useTranslation(['login', 'common']);
+    const { t } = useTranslation(['login', 'common', 'profiles']);
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const reauthProfileId = searchParams.get('profileId');
+    const reauthProfile = useMemo(
+        () =>
+            reauthProfileId
+                ? (getSavedProfiles().find((profile) => profile.id === reauthProfileId) ?? null)
+                : null,
+        [reauthProfileId]
+    );
+    const reauthServerUrl = useMemo(
+        () =>
+            reauthProfile
+                ? (getSavedServers().find((server) => server.id === reauthProfile.serverId)?.url ??
+                  null)
+                : null,
+        [reauthProfile]
+    );
+    const requestedServerUrl = searchParams.get('server')?.trim() ?? '';
     const predefinedServerAddress = useServerAddress();
 
-    const [serverUrl, setServerUrl] = useState<string>(() => getServerUrl() || '');
-    const [step, setStep] = useState<Step>(() => (getServerUrl() ? 'method' : 'server'));
+    const [serverUrl, setServerUrl] = useState<string>(
+        () => reauthServerUrl || requestedServerUrl || getServerUrl() || ''
+    );
+    const [step, setStep] = useState<Step>(() =>
+        reauthProfile
+            ? 'password'
+            : reauthServerUrl || requestedServerUrl || getServerUrl()
+              ? 'method'
+              : 'server'
+    );
     const [checkingServer, setCheckingServer] = useState(false);
     const [serverCheckError, setServerCheckError] = useState<string | null>(null);
 
     const discovery = useDiscoverServers();
     const discoveryStartedRef = useRef(false);
 
-    const [username, setUsername] = useState('');
+    const [username, setUsername] = useState(() => reauthProfile?.username ?? '');
     const [password, setPassword] = useState('');
     const login = useLogin();
     const [loginError, setLoginError] = useState<string | null>(null);
@@ -59,14 +87,19 @@ const Login = () => {
 
     const quickConnectStatus = useQuickConnectStatus(serverUrl, quickConnectSecret, isPolling);
 
-    // A server pre-configured by the deployment (e.g. bundled with the Pelagica
-    // backend) means the user never has to type a server address on the TV.
     useEffect(() => {
-        if (!predefinedServerAddress?.trim() || getServerUrl()) return;
-        saveServerUrl(predefinedServerAddress);
+        if (reauthProfileId && !reauthProfile) {
+            navigate('/profiles', { mode: 'reset' });
+        }
+    }, [reauthProfileId, reauthProfile, navigate]);
+
+    // A server pre-configured by the deployment means the user never has to
+    // type a server address on the TV.
+    useEffect(() => {
+        if (!predefinedServerAddress?.trim() || serverUrl) return;
         setServerUrl(predefinedServerAddress);
         setStep('method');
-    }, [predefinedServerAddress]);
+    }, [predefinedServerAddress, serverUrl]);
 
     useEffect(() => {
         if (step !== 'server' || predefinedServerAddress || discoveryStartedRef.current) return;
@@ -88,7 +121,6 @@ const Login = () => {
                     setServerCheckError(t('login:could_not_find_server'));
                     return;
                 }
-                saveServerUrl(best.address);
                 setServerUrl(best.address);
                 setStep('method');
             } finally {
@@ -145,11 +177,19 @@ const Login = () => {
         setIsPolling(false);
 
         quickConnectAuthenticate
-            .mutateAsync({ server: serverUrl, secret: quickConnectSecret })
+            .mutateAsync({
+                server: serverUrl,
+                secret: quickConnectSecret,
+                expectedUserId: reauthProfile?.jellyfinUserId,
+            })
             .then(() => navigate('/', { mode: 'reset' }))
-            .catch(() => {
-                setQuickConnectError(t('login:quick_connect_auth_failed'));
-                setQuickConnectApproved(false);
+            .catch((error: unknown) => {
+                setQuickConnectError(
+                    error instanceof ProfileIdentityMismatchError
+                        ? t('login:login_failed')
+                        : t('login:quick_connect_auth_failed')
+                );
+                setQuickConnectApproved(true);
             });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
@@ -159,6 +199,7 @@ const Login = () => {
         serverUrl,
         quickConnectAuthenticate,
         navigate,
+        reauthProfile,
     ]);
 
     const onSubmitPassword = useCallback(
@@ -166,13 +207,23 @@ const Login = () => {
             e.preventDefault();
             setLoginError(null);
             try {
-                await login.mutateAsync({ server: serverUrl, username, password });
+                await login.mutateAsync({
+                    server: serverUrl,
+                    username:
+                        reauthProfile?.username?.trim() || reauthProfile?.displayName || username,
+                    password,
+                    expectedUserId: reauthProfile?.jellyfinUserId,
+                });
                 navigate('/', { mode: 'reset' });
-            } catch {
-                setLoginError(t('login:invalid_credentials'));
+            } catch (error) {
+                setLoginError(
+                    error instanceof ProfileIdentityMismatchError
+                        ? t('login:login_failed')
+                        : t('login:invalid_credentials')
+                );
             }
         },
-        [serverUrl, username, password, login, navigate, t]
+        [serverUrl, username, password, login, navigate, t, reauthProfile]
     );
 
     const quickConnectUrl = getQuickConnectUrl(quickConnectCode);
@@ -180,8 +231,12 @@ const Login = () => {
     return (
         <div className="flex min-h-svh flex-col items-center justify-center gap-3 p-6">
             <div className="flex flex-col items-center gap-2">
-                <img src="logo.svg" alt="Pelagica logo" className="h-8 w-8" />
-                <h1 className="text-2xl font-semibold">Pelagica</h1>
+                <h1 className="text-2xl font-semibold">Littora</h1>
+                {reauthProfile && (
+                    <p className="text-sm text-muted-foreground">
+                        {t('login:login_to_jellyfin')}: {reauthProfile.displayName}
+                    </p>
+                )}
             </div>
 
             {step === 'server' && (
@@ -199,7 +254,7 @@ const Login = () => {
                             autoFocus={discovery.servers.length === 0 && !discovery.isScanning}
                         />
                         {serverCheckError && <ErrorMessage message={serverCheckError} />}
-                        <FocusableButton type="submit" disabled={checkingServer}>
+                        <FocusableButton className="w-full" type="submit" disabled={checkingServer}>
                             {checkingServer ? t('login:connecting') : t('login:connect')}
                         </FocusableButton>
                     </form>
@@ -221,7 +276,7 @@ const Login = () => {
                                 <FocusableButton
                                     key={server.id ?? server.address}
                                     variant="outline"
-                                    className="justify-start"
+                                    className="w-full justify-start"
                                     autoFocus={index === 0}
                                     disabled={checkingServer}
                                     onClick={() => connectToServer(server.address)}
@@ -242,15 +297,24 @@ const Login = () => {
 
             {step === 'method' && (
                 <div className="flex w-full max-w-sm flex-col gap-3">
-                    <FocusableButton autoFocus onClick={() => setStep('quickconnect')}>
+                    <FocusableButton
+                        autoFocus
+                        className="w-full"
+                        onClick={() => setStep('quickconnect')}
+                    >
                         {t('login:sign_in_with_quick_connect')}
                     </FocusableButton>
-                    <FocusableButton variant="outline" onClick={() => setStep('password')}>
+                    <FocusableButton
+                        variant="outline"
+                        className="w-full"
+                        onClick={() => setStep('password')}
+                    >
                         {t('login:sign_in_with_password')}
                     </FocusableButton>
-                    {!predefinedServerAddress && (
+                    {!predefinedServerAddress && !reauthProfile && (
                         <FocusableButton
                             variant="ghost"
+                            className="w-full"
                             onClick={() => {
                                 setStep('server');
                                 setServerCheckError(null);
@@ -283,11 +347,13 @@ const Login = () => {
                     <FocusableButton
                         autoFocus
                         variant="secondary"
+                        className="w-full"
                         onClick={() => {
                             setIsPolling(false);
                             setQuickConnectCode(null);
                             setQuickConnectSecret(undefined);
                             setQuickConnectError(null);
+                            setQuickConnectApproved(false);
                             setStep('method');
                         }}
                     >
@@ -298,16 +364,20 @@ const Login = () => {
 
             {step === 'password' && (
                 <form onSubmit={onSubmitPassword} className="flex w-full max-w-sm flex-col gap-3">
-                    <label className="text-sm text-muted-foreground" htmlFor="username">
-                        {t('login:username')}
-                    </label>
-                    <FocusableField
-                        id="username"
-                        placeholder={t('login:username')}
-                        autoFocus
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
+                    {!reauthProfile && (
+                        <>
+                            <label className="text-sm text-muted-foreground" htmlFor="username">
+                                {t('login:username')}
+                            </label>
+                            <FocusableField
+                                id="username"
+                                placeholder={t('login:username')}
+                                autoFocus
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                            />
+                        </>
+                    )}
                     <label className="text-sm text-muted-foreground" htmlFor="password">
                         {t('login:password')}
                     </label>
@@ -319,14 +389,28 @@ const Login = () => {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                     {loginError && <ErrorMessage message={loginError} />}
-                    <FocusableButton type="submit" disabled={login.isPending}>
+                    <FocusableButton className="w-full" type="submit" disabled={login.isPending}>
                         {login.isPending ? t('login:logging_in') : t('login:login')}
                     </FocusableButton>
-                    <FocusableButton variant="ghost" onClick={() => setStep('method')}>
-                        {t('common:back')}
-                    </FocusableButton>
+                    {!reauthProfile && (
+                        <FocusableButton
+                            variant="ghost"
+                            className="w-full"
+                            onClick={() => setStep('method')}
+                        >
+                            {t('common:back')}
+                        </FocusableButton>
+                    )}
                 </form>
             )}
+
+            <FocusableButton
+                variant="ghost"
+                className="w-full max-w-sm"
+                onClick={() => navigate(-1)}
+            >
+                {t('profiles:back_to_profiles')}
+            </FocusableButton>
         </div>
     );
 };

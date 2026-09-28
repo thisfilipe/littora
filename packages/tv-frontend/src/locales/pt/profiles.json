@@ -1,0 +1,13 @@
+{
+    "who_is_watching": "Quem está assistindo?",
+    "add_profile": "Adicionar perfil",
+    "switch_profile": "Trocar perfil",
+    "back_to_profiles": "Voltar aos perfis",
+    "change_server": "Mudar servidor",
+    "choose_server": "Escolher servidor",
+    "disconnected": "Desconectado",
+    "disconnect_profile": "Sair",
+    "delete_profile": "Excluir",
+    "return_to_app": "Voltar ao app",
+    "empty_profiles": "Ainda não há perfis neste servidor. Selecione + para adicionar."
+}

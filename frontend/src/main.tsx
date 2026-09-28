@@ -9,9 +9,9 @@ import './theme.css';
 import '@pelagica/core/i18n';
 
 if (isDesktopBuild) {
-    setClientInfo({ name: 'Pelagica Desktop', version: VERSION, platform: 'desktop' });
+    setClientInfo({ name: 'Littora Desktop', version: VERSION, platform: 'desktop' });
 } else {
-    setClientInfo({ name: 'Pelagica', version: VERSION });
+    setClientInfo({ name: 'Littora', version: VERSION });
 }
 
 createRoot(document.getElementById('root')!).render(<App />);

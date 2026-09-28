@@ -1,7 +1,7 @@
 {
-    "name": "Pelagica",
-    "short_name": "Pelagica",
-    "description": "Watch Movies and TV Shows from your Jellyfin server.",
+    "name": "Littora",
+    "short_name": "Littora",
+    "description": "A TV-first Jellyfin client for a shared household screen.",
     "display": "standalone",
     "categories": ["entertainment", "video", "movies", "tv"],
     "start_url": "__BASE_PATH__/",

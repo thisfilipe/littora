@@ -1,4 +1,4 @@
-import { useConfig } from '@pelagica/core';
+import { getActiveProfile, getUserProfileImageUrl, useConfig } from '@pelagica/core';
 import { useTranslation } from 'react-i18next';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { House, Library, Search, Settings } from 'lucide-react';
@@ -11,9 +11,21 @@ import { topBarFocusKey, type TopBarItem } from '@/router/types';
 export type { TopBarItem };
 
 const TopBar = ({ activeItem }: { activeItem?: TopBarItem }) => {
-    const { t } = useTranslation(['sidebar', 'common', 'settings']);
+    const { t } = useTranslation(['sidebar', 'common', 'settings', 'profiles']);
     const { config } = useConfig();
     const layerId = useLayerId();
+    const activeProfile = getActiveProfile();
+    const profileName = activeProfile?.displayName ?? t('profiles:switch_profile');
+    const profileAvatarUrl =
+        activeProfile?.avatarUrl ||
+        (activeProfile ? getUserProfileImageUrl(activeProfile.jellyfinUserId) : '');
+    const profileInitials = profileName
+        .trim()
+        .split(/\s+/)
+        .slice(0, 2)
+        .map((part) => part[0] ?? '')
+        .join('')
+        .toUpperCase();
 
     const { ref, focusKey } = useLayerFocusable<object, HTMLDivElement>({
         focusable: true,
@@ -80,6 +92,25 @@ const TopBar = ({ activeItem }: { activeItem?: TopBarItem }) => {
                             </FocusableNavLink>
                         </nav>
                     </div>
+
+                    <FocusableNavLink
+                        to="/profiles"
+                        mode="push"
+                        focusKey={topBarFocusKey('profiles', layerId)}
+                        active={activeItem === 'profiles'}
+                        className="max-w-48"
+                    >
+                        <Avatar size="sm" className="rounded-md">
+                            <AvatarImage
+                                src={profileAvatarUrl}
+                                alt={profileName}
+                            />
+                            <AvatarFallback className="rounded-md text-[0.6rem]">
+                                {profileInitials || '??'}
+                            </AvatarFallback>
+                        </Avatar>
+                        <span className="max-w-32 truncate">{profileName}</span>
+                    </FocusableNavLink>
                 </div>
             </FocusContext.Provider>
         </header>

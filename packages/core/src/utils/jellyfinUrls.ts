@@ -416,12 +416,12 @@ export function getTrickplayImageUrl(itemId: string, width: number, imageIndex: 
     }
 }
 
-export function getUserProfileImageUrl(userId: string): string {
+export function getUserProfileImageUrl(userId: string, serverUrl?: string): string {
     try {
-        const creds = resolveCredentials();
-        if (!creds) return '';
+        const server = serverUrl?.trim() || getServerUrl();
+        if (!server) return '';
 
-        const url = new URL(creds.server);
+        const url = new URL(server);
         url.pathname = appendPath(url.pathname, 'Users', userId, 'Images', 'Primary');
         url.searchParams.append('quality', '90');
 

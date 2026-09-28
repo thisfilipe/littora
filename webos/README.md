@@ -1,4 +1,6 @@
-# Pelagica for webOS
+# Littora webOS (inherited target)
+
+This is the Pelagica webOS target retained in the Littora fork; webOS is not yet an adopted Littora release target. Its app ID (`app.pelagica.pelagica`) and artwork remain inherited. Do not distribute a Littora package until its identity and artwork have been reviewed. See the [repository cleanup plan](../docs/REPO-CLEANUP.md).
 
 ## Tasks
 

@@ -2,6 +2,7 @@ import { lazy } from 'react';
 import type { RouteDef } from './types';
 
 const LoginPage = lazy(() => import('@/routes/Login'));
+const ProfilesPage = lazy(() => import('@/routes/Profiles'));
 const HomePage = lazy(() => import('@/routes/Home'));
 const LibraryPage = lazy(() => import('@/routes/Library'));
 const LibraryDetailPage = lazy(() => import('@/routes/LibraryDetail'));
@@ -16,6 +17,7 @@ const SettingsPage = lazy(() => import('@/routes/Settings'));
 const SearchPage = lazy(() => import('@/routes/Search'));
 
 export const routes: RouteDef[] = [
+    { pattern: '/profiles', component: ProfilesPage, chrome: 'none' },
     { pattern: '/login', component: LoginPage, chrome: 'none' },
     { pattern: '/player/:itemId', component: PlayerPage, chrome: 'none' },
     { pattern: '/', component: HomePage, chrome: 'shell', activeItem: 'home' },

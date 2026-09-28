@@ -1,0 +1,13 @@
+{
+    "who_is_watching": "Who's watching?",
+    "add_profile": "Add profile",
+    "switch_profile": "Switch profile",
+    "back_to_profiles": "Back to profiles",
+    "change_server": "Change server",
+    "choose_server": "Choose a server",
+    "disconnected": "Disconnected",
+    "disconnect_profile": "Sign out",
+    "delete_profile": "Delete",
+    "return_to_app": "Return to app",
+    "empty_profiles": "No profiles on this server yet. Choose + to add one."
+}

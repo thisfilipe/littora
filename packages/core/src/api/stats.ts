@@ -5,6 +5,11 @@ export type StatsConsent = 'granted' | 'denied' | 'unknown';
 
 const LOCAL_STATS_CONSENT_KEY = 'pelagica_stats_consent';
 
+const isTvPlatform = () => {
+    const platform = getPlatform();
+    return platform === 'tizen' || platform === 'webos';
+};
+
 const numberToStatsConsent = (value: number): StatsConsent => {
     switch (value) {
         case 2:
@@ -18,23 +23,15 @@ const numberToStatsConsent = (value: number): StatsConsent => {
     }
 };
 
-const hasStatsConsentBackend = () => {
-    const platform = getPlatform();
-    return platform !== 'tizen' && platform !== 'webos';
-};
-
-const getLocalStatsConsent = (): StatsConsent => {
-    const value = localStorage.getItem(LOCAL_STATS_CONSENT_KEY);
-    return value === 'granted' || value === 'denied' ? value : 'unknown';
-};
-
 const setLocalStatsConsent = (consent: boolean): void => {
     localStorage.setItem(LOCAL_STATS_CONSENT_KEY, consent ? 'granted' : 'denied');
 };
 
 export const getStatsConsent = async (): Promise<StatsConsent> => {
-    if (!hasStatsConsentBackend()) {
-        return getLocalStatsConsent();
+    if (isTvPlatform()) {
+        // Littora's TV clients do not collect or send usage statistics.
+        setLocalStatsConsent(false);
+        return 'denied';
     }
 
     const res = await fetch(withBasePath('/api/stats-consent'));
@@ -46,8 +43,8 @@ export const getStatsConsent = async (): Promise<StatsConsent> => {
 };
 
 export const setStatsConsent = async (consent: boolean): Promise<void> => {
-    if (!hasStatsConsentBackend()) {
-        setLocalStatsConsent(consent);
+    if (isTvPlatform()) {
+        setLocalStatsConsent(false);
         return;
     }
 
