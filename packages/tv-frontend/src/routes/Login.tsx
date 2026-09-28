@@ -60,7 +60,7 @@ const Login = () => {
     );
     const [step, setStep] = useState<Step>(() =>
         reauthProfile
-            ? 'password'
+            ? 'method'
             : reauthServerUrl || requestedServerUrl || getServerUrl()
               ? 'method'
               : 'server'
@@ -209,8 +209,7 @@ const Login = () => {
             try {
                 await login.mutateAsync({
                     server: serverUrl,
-                    username:
-                        reauthProfile?.username?.trim() || reauthProfile?.displayName || username,
+                    username: reauthProfile?.username?.trim() || username.trim(),
                     password,
                     expectedUserId: reauthProfile?.jellyfinUserId,
                 });
@@ -226,7 +225,7 @@ const Login = () => {
         [serverUrl, username, password, login, navigate, t, reauthProfile]
     );
 
-    const quickConnectUrl = getQuickConnectUrl(quickConnectCode);
+    const quickConnectUrl = getQuickConnectUrl(quickConnectCode, serverUrl);
 
     return (
         <div className="flex min-h-svh flex-col items-center justify-center gap-3 p-6">
@@ -364,7 +363,7 @@ const Login = () => {
 
             {step === 'password' && (
                 <form onSubmit={onSubmitPassword} className="flex w-full max-w-sm flex-col gap-3">
-                    {!reauthProfile && (
+                    {(!reauthProfile || !reauthProfile.username?.trim()) && (
                         <>
                             <label className="text-sm text-muted-foreground" htmlFor="username">
                                 {t('login:username')}
@@ -392,15 +391,13 @@ const Login = () => {
                     <FocusableButton className="w-full" type="submit" disabled={login.isPending}>
                         {login.isPending ? t('login:logging_in') : t('login:login')}
                     </FocusableButton>
-                    {!reauthProfile && (
-                        <FocusableButton
-                            variant="ghost"
-                            className="w-full"
-                            onClick={() => setStep('method')}
-                        >
-                            {t('common:back')}
-                        </FocusableButton>
-                    )}
+                    <FocusableButton
+                        variant="ghost"
+                        className="w-full"
+                        onClick={() => setStep('method')}
+                    >
+                        {t('common:back')}
+                    </FocusableButton>
                 </form>
             )}
 

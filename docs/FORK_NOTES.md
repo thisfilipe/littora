@@ -6,7 +6,7 @@
 
 - Upstream repository: <https://github.com/PelagicaApp/pelagica>
 - Git remote name: `upstream`
-- Baseline commit in this checkout: `d551aa48a8ce74be01a136c0cbb61dde66ed7f9f`
+- Selected Pelagica baseline commit: `d551aa48a8ce74be01a136c0cbb61dde66ed7f9f`
 - Fork repository: <https://github.com/thisfilipe/littora>
 - Git remote name: `origin`
 
@@ -22,7 +22,7 @@ Littora is a TV-first Jellyfin client fork. Samsung Tizen and a shared household
 - `main` is the stable branch and receives changes through pull requests from `develop`.
 - `upstream` remains the Pelagica source remote; upstream changes should be reviewed and integrated deliberately into `develop`.
 
-The local `develop` branch was created from `c01b7ce` on 2026-09-27 and tracks `origin/develop`. Phase 1 and repository cleanup changes are committed there. Local and remote `main` both point to the Pelagica baseline `d551aa48a8ce74be01a136c0cbb61dde66ed7f9f`; the first Littora planning commit and subsequent Littora work remain in `develop` history. GitHub keeps `main` as the default branch and applies the [main PR and CI ruleset](https://github.com/thisfilipe/littora/rules/24083663), which requires PRs, build/lint/target validation, and prevents deletion and force-push.
+The local `develop` branch was created from `c01b7ce` on 2026-09-27 and tracks `origin/develop`. PR #1 merged the Littora work into `main` as `455314c`; that merge contains the `develop` head `805f194`. `main` remains GitHub's default branch, and Littora work continues on `develop` through pull requests. The [main PR and CI ruleset](https://github.com/thisfilipe/littora/rules/24083663) requires PRs, build/lint/target validation, and prevents deletion and force-push.
 
 ## Development setup
 
@@ -40,7 +40,7 @@ For the localization layout and how to add Littora-owned translations, see
 
 ## Validation status
 
-The Tizen, webOS, and web builds passed locally on 2026-09-27. GitHub Actions build checks passed on `aaf81e2`, and lint/format checks passed on `467f2b4`; see the Phase 1 progress record for the earlier build commands and warnings. The baseline was not built separately, and no release or deployment has been performed for Littora.
+PR #1's GitHub Actions passed on head `805f194`: Tizen, webOS, and web builds; lint/format; and PR-target validation. The local Tizen production build and TV frontend lint also passed on that head. The build reports the existing WebAPI script bundling and large-chunk warnings, and lint reports existing Fast Refresh warnings. Reference TV validation and its remaining edge cases are recorded in [PHASE-1.md](./PHASE-1.md). The baseline was not built separately, and no release or deployment has been performed for Littora.
 
 ## License and attribution
 

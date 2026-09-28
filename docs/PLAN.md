@@ -190,12 +190,16 @@ type SavedProfile = {
     jellyfinUserId: string;
     accessToken: string;
     displayName: string;
+    username?: string;
     avatarUrl?: string;
     lastUsedAt?: number;
+    requiresAuthentication?: boolean;
 };
 
 type DeviceSession = {
     activeProfileId: string | null;
+    selectedServerId: string | null;
+    lastUsedProfileId: string | null;
 };
 ```
 
@@ -218,11 +222,11 @@ Do not store plaintext passwords.
 From the profile manager:
 
 1. choose "Add profile";
-2. authenticate another Jellyfin account on the already-known server;
+2. authenticate another Jellyfin account on the selected server, or choose another saved server;
 3. save its token and metadata;
-4. return to the profile picker.
+4. enter the newly authenticated profile; keep it available in the picker for later switches.
 
-Do not make the user enter the server URL again.
+Default to the last-used server when adding a profile. Do not make the user re-enter a saved server URL.
 
 ### App launch
 
@@ -251,19 +255,22 @@ Current profile
 
 No password is required while the saved token remains valid.
 
+When the saved profile is marked as requiring authentication, selecting it must ask for credentials for that profile and verify that the returned Jellyfin user ID matches the saved identity before replacing its credentials.
+
 ### Partial sign-out / leave session
 
 There must be a distinction between:
 
-- leave current viewing session;
+- switch to another profile or leave the current viewing session;
+- explicitly sign out a saved profile;
 - forget/remove saved profile;
 - disconnect server.
 
-"Leave current viewing session" should return to the profile picker while preserving saved credentials.
+Switching profiles ends the old local session while preserving that profile's usable saved credentials. Explicit **Sign Out** keeps the profile tile and server, but marks that profile as requiring authentication the next time it is selected. Neither operation removes the profile.
 
 ### Remove profile
 
-Explicit action requiring confirmation.
+Explicit action requiring confirmation. Only signed-out profiles can be removed, and the active profile is never removable. Removal remains available when no profile is active, including when it is the last saved profile.
 
 This deletes the locally saved token/profile entry.
 
@@ -278,6 +285,8 @@ If a saved token stops working:
 - ask only that profile to sign in again;
 - do not forget the server;
 - do not break other saved profiles.
+
+The profile picker must remain available after an authentication failure. Do not expose Home or another protected route while there is no active profile.
 
 ## Legacy migration
 
@@ -312,11 +321,14 @@ Design specifically for remote control.
 Requirements:
 
 - large avatars;
-- clear current focus state;
+- focus/highlight the avatar itself while keeping the profile name below it;
 - user name readable from normal TV distance;
 - deterministic left/right focus;
 - "Add profile" presented as a profile tile;
-- back behavior must never unexpectedly exit the app during normal selection;
+- show the most recently used server by default, with a server switcher when multiple servers are saved;
+- mark profiles that need authentication as disconnected;
+- show the focused profile's Sign Out or Delete action below its avatar; after sign-out, Delete is available even when no profile is active;
+- while no profile is active, Back must not reveal Home; Back at the root picker may exit the app;
 - no keyboard required for normal switching.
 
 ## Security note
@@ -332,10 +344,14 @@ If the existing implementation only supports web storage, encapsulate all token 
 - At least three Jellyfin users can be saved on one TV.
 - Selecting each profile loads that user's own Jellyfin state.
 - Switching profile requires no password while its token is valid.
+- Switching between profiles clears the previous profile's cached identity data.
 - Restarting the app returns to the profile picker.
-- Leaving a session does not forget the server.
-- Removing one profile leaves all others intact.
+- Switching profiles keeps the old profile's valid saved credentials; explicit Sign Out requires authentication on the next selection.
+- Removing a signed-out profile requires confirmation, never removes the active identity, and leaves the server and all other profiles intact.
+- A failed/expired profile authentication keeps its tile and server, and cannot enter Home until a profile is authenticated.
 - Existing single-user installs migrate without losing access.
+
+The implementation and reference-device validation record live in [`PHASE-1.md`](./PHASE-1.md). Phase 1 remains open until the actual expired/revoked-token path and deliberate cross-profile cache isolation are checked on the reference TV.
 
 ---
 
