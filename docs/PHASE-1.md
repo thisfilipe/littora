@@ -14,7 +14,7 @@ This file is the phase's working record. It tracks findings, decisions, progress
 
 - `origin` points to `thisfilipe/littora`; `upstream` points to `PelagicaApp/pelagica`. At the start of the phase, `main` matched `origin/main`.
 - The commit before the Littora planning commit is `d551aa48a8ce74be01a136c0cbb61dde66ed7f9f`, the selected Pelagica baseline.
-- The first Littora planning commit is `c01b7ce5920f6cc421592b5e707c6db9b886c334`. It was initially made on `main`; it and the subsequent Littora changes are now committed on `develop` so future changes can reach `main` through pull requests. At the current checkpoint, local and remote `main` point to the Pelagica baseline, and `develop` tracks `origin/develop`.
+- The first Littora planning commit is `c01b7ce5920f6cc421592b5e707c6db9b886c334`. It was initially made on `main`, then moved with subsequent Littora work to `develop` so stable integration could happen through pull requests. PR #1 has since merged into `main` as `455314c`; the merge contains the `develop` head `805f194`, which still tracks `origin/develop`.
 - Web and Tizen build instructions exist, but builds, installation/launch on the reference TV, and a web launch had not been validated when this audit began.
 - The fork notes have since been created. No local `upstream/*` tracking refs were present, so upstream synchronization has not been exercised.
 - The working tree was clean before Phase 1 changes began. No product-wide cosmetic redesign was identified as part of this phase.
@@ -69,6 +69,12 @@ The first milestone is **F1-M1 — shared profile storage and legacy migration, 
 - [x] F1-M2: implement the TV profile selector, first setup, add, switch, sign-out, and removal.
 - [x] F1-M2: invalidate state/cache when switching identities; start at the selector after restart.
 - [ ] F1-M3: review behavior and validate the flow on the reference device.
+  - [x] Confirm app restart opens the profile picker.
+  - [x] Confirm three profiles can be added, selected, switched, signed out, and individually removed.
+  - [x] Confirm explicit sign-out requires reauthentication and rejects credentials for a different Jellyfin account.
+  - [x] Confirm Back cannot expose Home without an active profile and the app can still be exited from the root picker.
+  - [ ] Exercise a genuinely expired or revoked server token and confirm the 401/403 reauthentication path.
+  - [ ] Deliberately verify profile-scoped cache isolation; no old-profile data was apparent during observed switching, but this was not specifically stress-checked.
 
 ## Execution log
 
@@ -114,6 +120,14 @@ The first milestone is **F1-M1 — shared profile storage and legacy migration, 
 - Fetched `origin` and verified the remote refs and local tracking state. GitHub default-branch and branch-protection settings remain unchanged.
 - Updated repository cleanup and provenance notes to record the completed branch operations.
 
+### 2026-09-27 — reference TV validation and PR #1 merge
+
+- The user confirmed on the reference TV that restart opens the picker; three-profile add/select/switch/sign-out/remove flows work; explicit sign-out returns to reauthentication; credentials for another Jellyfin identity are rejected; Back does not reveal Home without a session; and the app can be exited from the root picker.
+- No previous-profile data was noticed during manual switching. A deliberate cache-isolation check remains open.
+- The actual expired/revoked-token path was not tested; explicit local sign-out is not equivalent to a server returning 401/403.
+- PR #1 (`develop` → `main`) merged as `455314c`. GitHub Actions passed on head `805f194`: Tizen/webOS/web build, lint/format, and PR-target validation.
+- The local Tizen production build and TV frontend lint also passed on the PR head; the existing WebAPI bundling, large-chunk, and Fast Refresh warnings remain non-blocking.
+
 ## Immediate next step
 
-The branch flow is established: GitHub keeps `main` as the default branch, while Littora work stays on `develop` and reaches `main` through a PR with required checks. F1-M1/F1-M2 compile for Tizen and web. The current repository cleanup decisions—including retained Pelagica assets, TMDB attribution, and the Sourcetoad MIT notice—are recorded in [REPO-CLEANUP.md](./REPO-CLEANUP.md) and [ASSET-PROVENANCE.md](./ASSET-PROVENANCE.md). The remaining external action/dependency license review and Tizen installer integrity review are release-readiness items in the cleanup checklist; they do not block profile validation. The immediate next step is F1-M3 on the reference TV: verify picker on restart, add/switch/sign-out/remove, reauthentication of an expired token, rejection of a different account during reauthentication, and no cross-profile cached data. The inherited artwork and release identity items remain deferred until the product and distribution targets mature.
+Finish F1-M3 by testing a server-side expired or revoked token and deliberately checking that switching profiles cannot show the previous profile's cached data. Record the results here; then close Phase 1 and begin Phase 2 by measuring focus-driven scrolling on the reference TV before choosing navigation changes. Repository cleanup decisions and remaining release-readiness items remain tracked in [REPO-CLEANUP.md](./REPO-CLEANUP.md) and [ASSET-PROVENANCE.md](./ASSET-PROVENANCE.md). The inherited artwork and production release identity remain deferred until the product and distribution targets mature.
