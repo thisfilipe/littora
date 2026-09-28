@@ -164,11 +164,7 @@ export default function Profiles() {
 
     const confirmRemoval = (profile: SavedProfile) => {
         const currentProfile = getActiveProfile();
-        if (
-            !profile.requiresAuthentication ||
-            !currentProfile ||
-            currentProfile.id === profile.id
-        ) {
+        if (!profile.requiresAuthentication || currentProfile?.id === profile.id) {
             return;
         }
         removeSavedProfile(profile.id);
@@ -304,9 +300,7 @@ export default function Profiles() {
                         const isFocused = focusedProfileId === profile.id;
                         const isConfirmingRemoval = pendingRemovalId === profile.id;
                         const canDeleteProfile =
-                            profile.requiresAuthentication &&
-                            activeProfile !== null &&
-                            activeProfile.id !== profile.id;
+                            profile.requiresAuthentication && activeProfile?.id !== profile.id;
                         const profileServer = serversById.get(profile.serverId);
                         const avatarUrl =
                             profile.avatarUrl ||
